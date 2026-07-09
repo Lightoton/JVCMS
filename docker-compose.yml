@@ -1,0 +1,50 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: jvcms-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-root}
+      POSTGRES_DB: ${DB_NAME:-jvcms_db}
+    ports:
+      - "5433:5432"
+    volumes:
+      - jvcms-db-data:/var/lib/postgresql/data
+
+  backend:
+    build: 
+      context: ./backend/jvcms
+      dockerfile: Dockerfile
+    container_name: jvcms-backend
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/${DB_NAME:-jvcms_db}
+      - SPRING_DATASOURCE_USERNAME=${DB_USER:-postgres}
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD:-root}
+      - JWT_SECRET=${JWT_SECRET:-SuperSecretKeyForDevelopmentOnlyPleaseChangeInProd123}
+    ports:
+      - "8080:8080"
+    volumes:
+      - jvcms-uploads:/app/uploads
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: jvcms-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:8080/api/v1}
+      - INTERNAL_API_URL=http://backend:8080/api/v1
+      - NEXT_PUBLIC_UPLOADS_URL=${NEXT_PUBLIC_UPLOADS_URL:-http://localhost:8080}
+    ports:
+      - "3000:3000"
+
+volumes:
+  jvcms-db-data:
+  jvcms-uploads:
