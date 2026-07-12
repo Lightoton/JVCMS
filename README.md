@@ -241,8 +241,26 @@ JVCMS is **headless**, which means your website fetches content from the CMS API
 ### Key Points
 
 - Your website's **design, layout, and HTML/CSS stay exactly the same**. Only the data source changes — from hardcoded values to API responses.
-- The `GET /api/v1/content/{id}` endpoint is **public** (no authentication required), so your website can call it directly from the browser or during server-side rendering.
+- The `GET /api/v1/content/{schemaId}` endpoint is **public** (no authentication required), so your website can call it directly from the browser or during server-side rendering.
 - For **static site generators** (Astro, Hugo, Gatsby), you would call the API at build time and generate static HTML pages with the fetched content.
+
+### 🤖 Building a Frontend with AI Agents
+
+If you are using an AI coding assistant (like GitHub Copilot, Cursor, or ChatGPT) to build the public-facing website for this CMS, you can copy and paste the following prompt to give the AI the exact context it needs to integrate with JVCMS flawlessly.
+
+**Prompt for AI Agent:**
+> "I want you to build a frontend website for me. I am using JVCMS, a headless schema-driven CMS.
+> 
+> **Important Rules:**
+> 1. DO NOT build a backend, database, or admin panel. The CMS backend (Spring Boot) and Admin Panel (Next.js) already exist and are fully functional. Do not modify them.
+> 2. Your task is ONLY to build the public-facing frontend and fetch data from the existing CMS REST API.
+> 
+> **How JVCMS works:**
+> - The data schema is defined in `cms.config.json`. Read this file to understand the content structure.
+> - To fetch content for a specific model (e.g., `hero` or `menu`), make a `GET` request to `http://localhost:8080/api/v1/content/{schemaId}`. The API requires no authentication and returns a JSON object containing the fields defined in the schema.
+> - Image fields in the API response contain the relative path to the image (e.g., `/uploads/filename.webp`). You must prefix this path with the backend URL (e.g., `http://localhost:8080/uploads/filename.webp`) to display images on the frontend.
+> 
+> Please read the `cms.config.json` file first to understand the data models we have available, and then proceed to build the website layout and integrate the API calls."
 
 ---
 
@@ -384,6 +402,24 @@ docker-compose up -d --build
 3. Изображения, загруженные через админку, доступны по адресу `http://your-server:8080/uploads/filename.webp`.
 
 Дизайн и верстка вашего сайта **не меняются** — меняется только источник данных. Вместо захардкоженных значений ваш сайт берет их из CMS.
+
+### 🤖 Разработка фронтенда с помощью AI агентов
+
+Если вы используете AI-ассистента (например, GitHub Copilot, Cursor или ChatGPT) для создания клиентского сайта под эту CMS, просто скопируйте и отправьте ему этот промпт. Это даст нейросети идеальный контекст для правильной интеграции.
+
+**Промпт для AI-агента:**
+> "Напиши для меня клиентский фронтенд (сайт). Я использую JVCMS — готовую headless CMS.
+> 
+> **Строгие правила:**
+> 1. НЕ создавай бэкенд, базу данных или панель администратора. Бэкенд (Spring Boot) и админка (Next.js) уже существуют и полностью работают. Не изменяй их код.
+> 2. Твоя задача — ТОЛЬКО написать публичный сайт и настроить получение данных из готового REST API.
+> 
+> **Как работает JVCMS:**
+> - Структура данных (схема) описана в файле `cms.config.json`. Прочитай этот файл, чтобы понять, какие данные нам доступны.
+> - Чтобы получить контент для определенной модели (например, `hero` или `menu`), сделай `GET` запрос на `http://localhost:8080/api/v1/content/{schemaId}`. API публичное (без авторизации) и возвращает JSON-объект с полями из схемы.
+> - Поля с картинками (`type: "image"`) возвращают относительный путь (например, `/uploads/filename.webp`). Чтобы отобразить картинку на сайте, добавляй к этому пути URL бэкенда (например, `http://localhost:8080/uploads/filename.webp`).
+> 
+> Для начала прочитай файл `cms.config.json`, чтобы понять структуру данных, а затем приступай к верстке сайта и интеграции API-запросов."
 
 ### Конфигурация
 

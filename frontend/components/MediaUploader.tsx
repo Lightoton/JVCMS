@@ -37,7 +37,30 @@ export function MediaUploader() {
         <input
           type="file"
           name="file"
-          accept="image}
+          accept="image/*"
+          className="border p-2 w-full rounded"
+          disabled={isPending}
+        />
+      </div>
+      
+      <button 
+        type="submit" 
+        disabled={isPending}
+        className="bg-indigo-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-indigo-700 transition-colors disabled:opacity-50"
+      >
+        {isPending ? t.mediaUploaderBtnUploading : t.mediaUploaderBtn}
+      </button>
+
+      {message && (
+        <div className={`p-3 rounded-lg text-sm ${message.type === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
+          {message.text}
+        </div>
+      )}
+
+      {uploadedUrl && (
+        <div className="mt-4 pt-4 border-t">
+          <p className="text-sm font-medium text-gray-700 mb-2">{t.mediaUploaderUrlHint}</p>
+          <div className="relative h-32 bg-gray-50 rounded-lg overflow-hidden border">
             <img 
               src={`${process.env.NEXT_PUBLIC_UPLOADS_URL}${uploadedUrl}`} 
               alt="Preview" 

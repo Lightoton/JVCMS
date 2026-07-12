@@ -88,7 +88,8 @@ export function ContentManager() {
       );
     }
     if (field.type === 'image') {
-       const imageUrl = value?.startsWith('http') ? value : (value ? `http://127.0.0.1:8080${value}` : null);
+       const baseUrl = process.env.NEXT_PUBLIC_UPLOADS_URL || 'http://localhost:8080';
+       const imageUrl = value?.startsWith('http') ? value : (value ? `${baseUrl}${value}` : null);
        return (
          <div key={field.name} className="space-y-2 shrink-0">
            <label className="block text-sm font-medium text-gray-700">{field[`label_${lang}`] || field.label}</label>
@@ -109,13 +110,58 @@ export function ContentManager() {
                  placeholder={t.orInsertUrl}
                />
                <label className="inline-block text-center text-xs font-bold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 cursor-pointer px-3 py-2 rounded">
-                 {t.uploadFile}
-                 <input type="file" className="hidden" accept="image}
+                  {t.uploadFile}
+                  <input type="file" className="hidden" accept="image/*" onChange={(e) => {
+                    if (e.target.files?.[0]) handleImageUpload(e.target.files[0], field.name);
+                  }} />
+                </label>
+              </div>
+            </div>
+          </div>
+        );
+    }
+    return null;
+  };
+
+  const renderArrayField = (field: any) => {
+    const items = data[field.name] || [];
+    
+    const handleAdd = () => {
+      const newItem: any = { id: crypto.randomUUID() };
+      field.itemFields?.forEach((f: any) => {
+        newItem[f.name] = f.type === 'array' ? [] : '';
+      });
+      setData({ ...data, [field.name]: [...items, newItem] });
+    };
+
+    const handleDelete = (id: string) => {
+      if (items.length <= 1) {
+        alert(t.cannotDeleteLast);
+        return;
+      }
+      if (confirm(t.deleteConfirm)) {
+        setData({ ...data, [field.name]: items.filter((item: any) => item.id !== id) });
+      }
+    };
+
+    return (
+      <div key={field.name} className="border rounded-xl p-4 bg-gray-50/50">
+        <div className="flex justify-between items-center mb-4">
+          <h4 className="font-bold text-gray-800">{field[`label_${lang}`] || field.label}</h4>
+          <button onClick={handleAdd} className="text-sm bg-white border px-3 py-1.5 rounded shadow-sm hover:bg-gray-50">
+            {t.addBtn}
+          </button>
+        </div>
+        
+        <div className="space-y-4">
+          {items.map((item: any, index: number) => (
+            <div key={item.id || index} className="flex gap-4 p-4 bg-white border rounded-lg relative group">
                {field.itemFields?.find((f: any) => f.type === 'image') && (
                  <div className="space-y-2 shrink-0 w-24">
                    {field.itemFields?.filter((f: any) => f.type === 'image').map((imgField: any) => {
                       const val = item[imgField.name];
-                      const imageUrl = val?.startsWith('http') ? val : (val ? `http://127.0.0.1:8080${val}` : null);
+                      const baseUrl = process.env.NEXT_PUBLIC_UPLOADS_URL || 'http://localhost:8080';
+                      const imageUrl = val?.startsWith('http') ? val : (val ? `${baseUrl}${val}` : null);
                       return (
                         <div key={imgField.name} className="flex flex-col items-center">
                           <div className="relative w-24 h-24 rounded-md overflow-hidden bg-gray-100 border mb-1">

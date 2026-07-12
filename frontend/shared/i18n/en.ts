@@ -47,6 +47,8 @@ export const en: Translations = {
   usersTitle: "System Users List",
   noUsers: "No users",
   emailHeader: "Email",
+  roleHeader: "Role",
+  actionsHeader: "Actions",
   changePassword: "Change Password",
   deleteUser: "Delete",
   deleteUserConfirm: "Are you sure you want to delete user",
