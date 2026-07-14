@@ -4,15 +4,10 @@ import { useTransition, useState, useEffect } from 'react';
 import { loginAction, checkInitAction } from '@/features/auth/actions';
 import { useTranslation } from '@/shared/i18n/LanguageContext';
 
-export function LoginView() {
+export function LoginView({ isInitialized }: { isInitialized: boolean }) {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
-  const [isInitialized, setIsInitialized] = useState<boolean | null>(null);
   const { t, lang, setLang } = useTranslation();
-
-  useEffect(() => {
-    checkInitAction().then(res => setIsInitialized(res));
-  }, []);
 
   const handleSubmit = async (formData: FormData) => {
     setError(null);
@@ -27,9 +22,7 @@ export function LoginView() {
     });
   };
 
-  if (isInitialized === null) {
-    return <div className="flex min-h-screen items-center justify-center">{t.loading}</div>;
-  }
+
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4 relative">

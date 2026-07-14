@@ -33,6 +33,15 @@ const nextConfig: NextConfig = {
       }
     ],
   },
+  experimental: {
+    serverActions: {
+      allowedOrigins: [
+        'cms-api-fitness.viktor-dev.de',
+        'localhost:3001',
+        'localhost:3000'
+      ]
+    }
+  }
 };
 
 export default nextConfig;
