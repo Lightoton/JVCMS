@@ -332,6 +332,9 @@ All variables have sensible defaults for local development. Override them via a 
 | `NEXT_PUBLIC_API_URL` | `http://localhost:8080/api/v1` | Backend URL as seen by the browser |
 | `INTERNAL_API_URL` | `http://backend:8080/api/v1` | Backend URL for server-side rendering (internal Docker network) |
 | `NEXT_PUBLIC_UPLOADS_URL` | `http://localhost:8080` | Base URL for image previews in the admin panel |
+| `ALLOWED_DOMAINS` | `localhost,127.0.0.1` | **Security (CSRF):** Comma-separated domains where the CMS runs (e.g. `my-domain.com`). Prevents proxy-based host spoofing. |
+
+> **Note:** Copy the `.env.example` file to `.env` and configure your environment variables before launching the system.
 
 ---
 
@@ -443,3 +446,6 @@ docker-compose up -d --build
 | `JWT_SECRET` | `SuperSecretKey...` | Секрет для подписи JWT (**обязательно сменить!**) |
 | `NEXT_PUBLIC_API_URL` | `http://localhost:8080/api/v1` | URL бэкенда для браузера |
 | `NEXT_PUBLIC_UPLOADS_URL` | `http://localhost:8080` | URL для превью картинок в админке |
+| `ALLOWED_DOMAINS` | `localhost,127.0.0.1` | **Безопасность (CSRF):** Домены через запятую (например, `my-domain.com`). Защищает от подмены заголовков за прокси (Cloudflare/Nginx). |
+
+> **Примечание:** Скопируйте файл `.env.example` в `.env` и настройте переменные окружения перед запуском системы.
