@@ -1,67 +1,95 @@
 {
   "models": [
     {
-      "id": "menu",
-      "label_ru": "Меню",
-      "label_en": "Menu",
-      "fields": [
-        {
-          "name": "pizza",
-          "label_ru": "Пиццы",
-          "label_en": "Pizzas",
-          "type": "array",
-          "itemFields": [
-            { "name": "name", "label_ru": "Название", "label_en": "Name", "type": "text" },
-            { "name": "price", "label_ru": "Цена (₽)", "label_en": "Price (€)", "type": "text" },
-            { "name": "description", "label_ru": "Описание", "label_en": "Description", "type": "text" },
-            { "name": "image", "label_ru": "Картинка", "label_en": "Image", "type": "image" }
-          ]
-        },
-        {
-          "name": "getraenke",
-          "label_ru": "Напитки",
-          "label_en": "Drinks",
-          "type": "array",
-          "itemFields": [
-            { "name": "name", "label_ru": "Название", "label_en": "Name", "type": "text" },
-            { "name": "price", "label_ru": "Цена (₽)", "label_en": "Price (€)", "type": "text" },
-            { "name": "description", "label_ru": "Описание", "label_en": "Description", "type": "text" },
-            { "name": "image", "label_ru": "Картинка", "label_en": "Image", "type": "image" }
-          ]
-        },
-        {
-          "name": "desserts",
-          "label_ru": "Десерты",
-          "label_en": "Desserts",
-          "type": "array",
-          "itemFields": [
-            { "name": "name", "label_ru": "Название", "label_en": "Name", "type": "text" },
-            { "name": "price", "label_ru": "Цена (₽)", "label_en": "Price (€)", "type": "text" },
-            { "name": "description", "label_ru": "Описание", "label_en": "Description", "type": "text" },
-            { "name": "image", "label_ru": "Картинка", "label_en": "Image", "type": "image" }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "hero",
-      "label_ru": "Главный экран",
-      "label_en": "Hero Section",
+      "id": "tariff_de",
+      "label_ru": "Тарифы (DE)",
+      "label_en": "Tariffs (DE)",
       "fields": [
         { "name": "title", "label_ru": "Заголовок", "label_en": "Title", "type": "text" },
         { "name": "subtitle", "label_ru": "Подзаголовок", "label_en": "Subtitle", "type": "text" },
-        { "name": "backgroundImage", "label_ru": "Фоновая картинка", "label_en": "Background Image", "type": "image" }
+        {
+          "name": "plans",
+          "label_ru": "Тарифные планы",
+          "label_en": "Plans",
+          "type": "array",
+          "itemFields": [
+            { "name": "name", "label_ru": "Название", "label_en": "Name", "type": "text" },
+            { "name": "price", "label_ru": "Цена", "label_en": "Price", "type": "text" },
+            { "name": "duration", "label_ru": "Условия", "label_en": "Duration", "type": "text" }
+          ]
+        },
+        { "name": "note1", "label_ru": "Заметка 1", "label_en": "Note 1", "type": "text" },
+        { "name": "note2", "label_ru": "Заметка 2", "label_en": "Note 2", "type": "text" },
+        { "name": "note3", "label_ru": "Заметка 3", "label_en": "Note 3", "type": "text" }
       ]
     },
     {
-      "id": "footer",
-      "label_ru": "Футер",
-      "label_en": "Footer",
+      "id": "tariff_en",
+      "label_ru": "Тарифы (EN)",
+      "label_en": "Tariffs (EN)",
       "fields": [
-        { "name": "address", "label_ru": "Адрес", "label_en": "Address", "type": "text" },
-        { "name": "phone", "label_ru": "Телефон", "label_en": "Phone", "type": "text" },
-        { "name": "email", "label_ru": "Email", "label_en": "Email", "type": "text" },
-        { "name": "workingHours", "label_ru": "Часы работы", "label_en": "Working Hours", "type": "text" }
+        { "name": "title", "label_ru": "Заголовок", "label_en": "Title", "type": "text" },
+        { "name": "subtitle", "label_ru": "Подзаголовок", "label_en": "Subtitle", "type": "text" },
+        {
+          "name": "plans",
+          "label_ru": "Тарифные планы",
+          "label_en": "Plans",
+          "type": "array",
+          "itemFields": [
+            { "name": "name", "label_ru": "Название", "label_en": "Name", "type": "text" },
+            { "name": "price", "label_ru": "Цена", "label_en": "Price", "type": "text" },
+            { "name": "duration", "label_ru": "Условия", "label_en": "Duration", "type": "text" }
+          ]
+        },
+        { "name": "note1", "label_ru": "Заметка 1", "label_en": "Note 1", "type": "text" },
+        { "name": "note2", "label_ru": "Заметка 2", "label_en": "Note 2", "type": "text" },
+        { "name": "note3", "label_ru": "Заметка 3", "label_en": "Note 3", "type": "text" }
+      ]
+    },
+    {
+      "id": "tariff_ru",
+      "label_ru": "Тарифы (RU)",
+      "label_en": "Tariffs (RU)",
+      "fields": [
+        { "name": "title", "label_ru": "Заголовок", "label_en": "Title", "type": "text" },
+        { "name": "subtitle", "label_ru": "Подзаголовок", "label_en": "Subtitle", "type": "text" },
+        {
+          "name": "plans",
+          "label_ru": "Тарифные планы",
+          "label_en": "Plans",
+          "type": "array",
+          "itemFields": [
+            { "name": "name", "label_ru": "Название", "label_en": "Name", "type": "text" },
+            { "name": "price", "label_ru": "Цена", "label_en": "Price", "type": "text" },
+            { "name": "duration", "label_ru": "Условия", "label_en": "Duration", "type": "text" }
+          ]
+        },
+        { "name": "note1", "label_ru": "Заметка 1", "label_en": "Note 1", "type": "text" },
+        { "name": "note2", "label_ru": "Заметка 2", "label_en": "Note 2", "type": "text" },
+        { "name": "note3", "label_ru": "Заметка 3", "label_en": "Note 3", "type": "text" }
+      ]
+    },
+    {
+      "id": "tariff_uk",
+      "label_ru": "Тарифы (UK)",
+      "label_en": "Tariffs (UK)",
+      "fields": [
+        { "name": "title", "label_ru": "Заголовок", "label_en": "Title", "type": "text" },
+        { "name": "subtitle", "label_ru": "Подзаголовок", "label_en": "Subtitle", "type": "text" },
+        {
+          "name": "plans",
+          "label_ru": "Тарифные планы",
+          "label_en": "Plans",
+          "type": "array",
+          "itemFields": [
+            { "name": "name", "label_ru": "Название", "label_en": "Name", "type": "text" },
+            { "name": "price", "label_ru": "Цена", "label_en": "Price", "type": "text" },
+            { "name": "duration", "label_ru": "Условия", "label_en": "Duration", "type": "text" }
+          ]
+        },
+        { "name": "note1", "label_ru": "Заметка 1", "label_en": "Note 1", "type": "text" },
+        { "name": "note2", "label_ru": "Заметка 2", "label_en": "Note 2", "type": "text" },
+        { "name": "note3", "label_ru": "Заметка 3", "label_en": "Note 3", "type": "text" }
       ]
     }
   ]
