@@ -61,8 +61,13 @@ class MediaServiceTest {
 
     @Test
     void testUploadImage_FallbackSavesOriginalFormat() throws IOException {
-        // Fallback triggers because "data" is not a valid image format for WebP conversion
-        MultipartFile file = new MockMultipartFile("file", "test.png", "image/png", "data".getBytes());
+        // Fallback triggers because this is not a fully valid image for WebP conversion,
+        // but it has valid PNG magic bytes to pass the signature validation.
+        byte[] fakePng = new byte[] {
+            (byte) 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A,
+            0x00, 0x00, 0x00, 0x0D
+        };
+        MultipartFile file = new MockMultipartFile("file", "test.png", "image/png", fakePng);
 
         Map<String, String> result = mediaService.uploadImage("test_image", file);
 

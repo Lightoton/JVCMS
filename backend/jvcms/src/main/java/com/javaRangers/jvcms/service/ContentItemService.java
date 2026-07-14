@@ -17,6 +17,7 @@ public class ContentItemService {
 
     @Transactional(readOnly = true)
     public Map<String, Object> getContent(String schemaIdentifier) {
+        validateSchemaIdentifier(schemaIdentifier);
         return repository.findBySchemaIdentifier(schemaIdentifier)
                 .map(ContentItem::getData)
                 .orElse(Map.of());
@@ -24,9 +25,7 @@ public class ContentItemService {
 
     @Transactional
     public ContentItem saveOrUpdateContent(String schemaIdentifier, Map<String, Object> data) {
-        if (schemaIdentifier == null || schemaIdentifier.trim().isEmpty()) {
-            throw new IllegalArgumentException("Schema identifier cannot be empty");
-        }
+        validateSchemaIdentifier(schemaIdentifier);
 
         ContentItem item = repository.findBySchemaIdentifier(schemaIdentifier)
                 .orElseGet(() -> {
@@ -49,7 +48,14 @@ public class ContentItemService {
     
     @Transactional
     public void deleteContent(String schemaIdentifier) {
+        validateSchemaIdentifier(schemaIdentifier);
         repository.findBySchemaIdentifier(schemaIdentifier)
                 .ifPresent(repository::delete);
+    }
+
+    private void validateSchemaIdentifier(String schemaIdentifier) {
+        if (schemaIdentifier == null || !schemaIdentifier.matches("^[a-zA-Z0-9_-]+$")) {
+            throw new IllegalArgumentException("Invalid schema identifier. Only alphanumeric characters, dashes, and underscores are allowed.");
+        }
     }
 }

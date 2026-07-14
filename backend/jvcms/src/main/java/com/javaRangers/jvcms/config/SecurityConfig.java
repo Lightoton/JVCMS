@@ -60,15 +60,25 @@ public class SecurityConfig {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        
-        configuration.setAllowedOrigins(allowedOrigins);
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
-        configuration.setAllowCredentials(true);
+        return request -> {
+            String uri = request.getRequestURI();
+            String method = request.getMethod();
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
+            if ("GET".equalsIgnoreCase(method) && (uri.startsWith("/api/v1/content") || uri.startsWith("/uploads"))) {
+                CorsConfiguration publicCors = new CorsConfiguration();
+                publicCors.setAllowedOrigins(List.of("*"));
+                publicCors.setAllowedMethods(List.of("GET", "OPTIONS"));
+                publicCors.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+                publicCors.setAllowCredentials(false);
+                return publicCors;
+            }
+
+            CorsConfiguration adminCors = new CorsConfiguration();
+            adminCors.setAllowedOrigins(allowedOrigins);
+            adminCors.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+            adminCors.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+            adminCors.setAllowCredentials(true);
+            return adminCors;
+        };
     }
 }

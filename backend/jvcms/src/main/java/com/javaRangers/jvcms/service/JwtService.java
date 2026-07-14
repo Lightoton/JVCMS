@@ -23,6 +23,17 @@ public class JwtService {
     @Value("${jwt.expiration}")
     private long jwtExpiration;
 
+    @jakarta.annotation.PostConstruct
+    public void validateSecret() {
+        if (secretKey == null || secretKey.isBlank() || secretKey.contains("please_change_this_secret")) {
+            throw new IllegalStateException("CRITICAL SECURITY VULNERABILITY: JWT Secret is using a default or empty value. You MUST set the JWT_SECRET environment variable.");
+        }
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        if (keyBytes.length < 32) {
+            throw new IllegalStateException("CRITICAL SECURITY VULNERABILITY: JWT Secret is too weak. It must be at least 32 bytes (256 bits) long for HS256.");
+        }
+    }
+
     public String generateToken(User user) {
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("role", user.getRole().name()); 

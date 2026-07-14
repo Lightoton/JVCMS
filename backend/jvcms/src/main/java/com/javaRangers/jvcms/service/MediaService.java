@@ -36,17 +36,25 @@ public class MediaService {
             throw new IllegalArgumentException("File is empty");
         }
 
-        
+        // Strict validation to prevent Path Traversal
+        if (imageKey == null || !imageKey.matches("^[a-zA-Z0-9_-]+$")) {
+            throw new IllegalArgumentException("Invalid image key. Only alphanumeric characters, dashes, and underscores are allowed.");
+        }
+
+        try {
+            if (!isValidImageSignature(file.getBytes())) {
+                throw new IllegalArgumentException("Invalid file format. Magic byte signature does not match allowed image types (JPG, PNG, WEBP).");
+            }
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Failed to read file signature.");
+        }
+
         String contentType = file.getContentType();
         if (contentType == null || !ALLOWED_MIME_TYPES.contains(contentType)) {
             throw new IllegalArgumentException("Invalid file format. Only JPG, PNG and WEBP are allowed.");
         }
 
-        
-        String cleanKey = imageKey.replaceAll("[^a-zA-Z0-9_-]", "");
-        if (cleanKey.isBlank()) {
-            throw new IllegalArgumentException("Invalid image key");
-        }
+        String cleanKey = imageKey;
 
         try {
             
@@ -125,5 +133,28 @@ public class MediaService {
         } catch (IOException e) {
             System.err.println("Failed to delete media file: " + e.getMessage());
         }
+    }
+
+    private boolean isValidImageSignature(byte[] bytes) {
+        if (bytes == null || bytes.length < 12) return false;
+
+        // JPEG (FF D8 FF)
+        if ((bytes[0] & 0xFF) == 0xFF && (bytes[1] & 0xFF) == 0xD8 && (bytes[2] & 0xFF) == 0xFF) {
+            return true;
+        }
+
+        // PNG (89 50 4E 47 0D 0A 1A 0A)
+        if ((bytes[0] & 0xFF) == 0x89 && (bytes[1] & 0xFF) == 0x50 && (bytes[2] & 0xFF) == 0x4E && (bytes[3] & 0xFF) == 0x47 &&
+            (bytes[4] & 0xFF) == 0x0D && (bytes[5] & 0xFF) == 0x0A && (bytes[6] & 0xFF) == 0x1A && (bytes[7] & 0xFF) == 0x0A) {
+            return true;
+        }
+
+        // WEBP (RIFF .... WEBP)
+        if (bytes[0] == 'R' && bytes[1] == 'I' && bytes[2] == 'F' && bytes[3] == 'F' &&
+            bytes[8] == 'W' && bytes[9] == 'E' && bytes[10] == 'B' && bytes[11] == 'P') {
+            return true;
+        }
+
+        return false;
     }
 }
