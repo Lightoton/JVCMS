@@ -37,6 +37,7 @@ const nextConfig: NextConfig = {
     serverActions: {
       allowedOrigins: [
         'cms-api-fitness.viktor-dev.de',
+        'cms-api-fitness.viktor-dev.de.',
         'localhost:3001',
         'localhost:3000'
       ]
