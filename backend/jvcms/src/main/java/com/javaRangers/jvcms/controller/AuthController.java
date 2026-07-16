@@ -2,6 +2,7 @@ package com.javaRangers.jvcms.controller;
 
 import com.javaRangers.jvcms.dto.AuthRequest;
 import com.javaRangers.jvcms.dto.AuthResponse;
+import com.javaRangers.jvcms.dto.UpdateUserRequest;
 import com.javaRangers.jvcms.service.AuthService;
 import com.javaRangers.jvcms.repository.UserRepository; 
 import lombok.RequiredArgsConstructor;
@@ -53,9 +54,9 @@ public class AuthController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/users/{email}/password")
-    public ResponseEntity<Void> changePassword(@PathVariable String email, @RequestBody AuthRequest request) {
-        authService.changePassword(email, request.password());
+    @PutMapping("/users/{email}")
+    public ResponseEntity<Void> updateUser(@PathVariable String email, @RequestBody UpdateUserRequest request) {
+        authService.updateUser(email, request.newEmail(), request.newPassword());
         return ResponseEntity.ok().build();
     }
 }

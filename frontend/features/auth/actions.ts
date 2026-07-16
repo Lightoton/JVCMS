@@ -96,16 +96,16 @@ export async function deleteUserAction(email: string) {
   }
 }
 
-export async function changePasswordAction(email: string, newPassword: string) {
+export async function updateUserAction(oldEmail: string, newEmail?: string, newPassword?: string) {
   try {
-    await fetchApi(`/auth/users/${encodeURIComponent(email)}/password`, {
+    await fetchApi(`/auth/users/${encodeURIComponent(oldEmail)}`, {
       method: 'PUT',
-      body: JSON.stringify({ password: newPassword }),
+      body: JSON.stringify({ newEmail, newPassword }),
       requireAuth: true,
     });
     return { success: true };
   } catch (error: unknown) {
     if (error instanceof Error) return { error: error.message };
-    return { error: 'Ошибка смены пароля' };
+    return { error: 'Ошибка обновления данных пользователя' };
   }
 }

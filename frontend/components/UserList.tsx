@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useTransition } from 'react';
-import { getUsersAction, deleteUserAction, changePasswordAction } from '@/features/auth/actions';
+import { getUsersAction, deleteUserAction, updateUserAction, logoutAction } from '@/features/auth/actions';
 import { useTranslation } from '@/shared/i18n/LanguageContext';
 
 interface User {
@@ -43,21 +43,39 @@ export function UserList() {
     }
   };
 
-  const handleChangePassword = (email: string) => {
-    const newPassword = window.prompt(`${t.newPasswordPrompt} ${email}:`);
-    if (newPassword) {
-      if (newPassword.length < 5) {
-        alert(t.passwordTooShort);
-        return;
+  const handleChangeCredentials = (email: string, role: string) => {
+    const newEmail = window.prompt(t.newEmailPrompt);
+    if (newEmail === null) return; // User cancelled
+
+    const newPassword = window.prompt(t.newPasswordPrompt);
+    if (newPassword === null) return; // User cancelled
+
+    if (!newEmail && !newPassword) {
+      return; // Nothing to change
+    }
+
+    if (newPassword && newPassword.length > 0 && newPassword.length < 5) {
+      alert(t.passwordTooShort);
+      return;
+    }
+
+    if (window.confirm(t.editConfirm1)) {
+      if (window.confirm(t.editConfirm2)) {
+        startTransition(async () => {
+          const res = await updateUserAction(email, newEmail, newPassword);
+          if (res.error) {
+            alert(res.error);
+          } else {
+            alert(t.credentialsChanged);
+            if (newEmail && newEmail !== email && role === 'ADMIN') {
+              alert(t.reloginRequired);
+              await logoutAction();
+            } else {
+              fetchUsers();
+            }
+          }
+        });
       }
-      startTransition(async () => {
-        const res = await changePasswordAction(email, newPassword);
-        if (res.error) {
-          alert(res.error);
-        } else {
-          alert(t.passwordChanged);
-        }
-      });
     }
   };
 
@@ -91,15 +109,15 @@ export function UserList() {
                     </span>
                   </td>
                   <td className="p-3 flex justify-end gap-2">
-                    {u.role !== 'ADMIN' && (
-                      <>
-                        <button 
-                          onClick={() => handleChangePassword(u.email)} 
-                          disabled={isPending}
-                          className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-2 py-1 text-xs rounded transition-colors"
-                        >
-                          {t.changePassword}
-                        </button>
+                    <>
+                      <button 
+                        onClick={() => handleChangeCredentials(u.email, u.role)} 
+                        disabled={isPending}
+                        className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-2 py-1 text-xs rounded transition-colors"
+                      >
+                        {t.changeCredentials}
+                      </button>
+                      {u.role !== 'ADMIN' && (
                         <button 
                           onClick={() => handleDelete(u.email)} 
                           disabled={isPending}
@@ -107,8 +125,8 @@ export function UserList() {
                         >
                           {t.deleteUser}
                         </button>
-                      </>
-                    )}
+                      )}
+                    </>
                   </td>
                 </tr>
               ))}

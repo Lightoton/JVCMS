@@ -105,12 +105,13 @@ class AuthServiceTest {
     }
 
     @Test
-    void testChangePassword_Success() {
+    void testUpdateUser_Success() {
         when(userRepository.findByEmail("client@test.com")).thenReturn(Optional.of(clientUser));
         when(passwordEncoder.encode("newpass")).thenReturn("newencoded");
         
-        authService.changePassword("client@test.com", "newpass");
+        authService.updateUser("client@test.com", "newemail@test.com", "newpass");
         
+        assertEquals("newemail@test.com", clientUser.getEmail());
         assertEquals("newencoded", clientUser.getPassword());
         verify(userRepository, times(1)).save(clientUser);
     }

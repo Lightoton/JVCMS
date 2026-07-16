@@ -87,10 +87,24 @@ public class AuthService {
     }
 
     @Transactional
-    public void changePassword(String email, String newRawPassword) {
-        User user = userRepository.findByEmail(email)
+    public void updateUser(String oldEmail, String newEmail, String newRawPassword) {
+        User user = userRepository.findByEmail(oldEmail)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        user.setPassword(passwordEncoder.encode(newRawPassword));
+
+        if (newEmail != null && !newEmail.isBlank() && !newEmail.equals(oldEmail)) {
+            if (userRepository.findByEmail(newEmail).isPresent()) {
+                throw new IllegalArgumentException("Email already taken");
+            }
+            user.setEmail(newEmail);
+        }
+
+        if (newRawPassword != null && !newRawPassword.isBlank()) {
+            if (newRawPassword.length() < 5) {
+                throw new IllegalArgumentException("Password is too short");
+            }
+            user.setPassword(passwordEncoder.encode(newRawPassword));
+        }
+
         userRepository.save(user);
     }
 }
