@@ -106,7 +106,7 @@ The key difference from traditional CMS platforms (WordPress, Strapi, etc.) is t
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/jvcms.git
+git clone https://github.com/Lightoton/jvcms.git
 cd jvcms
 
 # Start everything
