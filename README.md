@@ -42,6 +42,9 @@ The key difference from traditional CMS platforms (WordPress, Strapi, etc.) is t
 
 **This means:** one CMS backend serves any number of websites. Just swap out the `cms.config.json` file with a new schema, and the admin panel adapts instantly.
 
+### ✍️ Inline Editing Support
+Because JVCMS is strictly API-driven, you don't even have to use the built-in admin panel to edit content! You can build **inline editing** directly into your client's website. The client simply clicks on a text block on their live website, types new text, and your frontend sends a `PUT` request to the JVCMS REST API to save it. JVCMS acts purely as a secure, fast data storage and image optimization middleman.
+
 ---
 
 ## ✨ Key Features
