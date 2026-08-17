@@ -4,9 +4,13 @@ import com.javaRangers.jvcms.dto.AuthRequest;
 import com.javaRangers.jvcms.dto.AuthResponse;
 import com.javaRangers.jvcms.dto.UpdateUserRequest;
 import com.javaRangers.jvcms.service.AuthService;
+import com.javaRangers.jvcms.service.LoginAttemptService;
 import com.javaRangers.jvcms.repository.UserRepository; 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -18,6 +22,15 @@ public class AuthController {
 
     private final AuthService authService;
     private final UserRepository userRepository; 
+    private final LoginAttemptService loginAttemptService;
+
+    private String getClientIP(HttpServletRequest request) {
+        String xfHeader = request.getHeader("X-Forwarded-For");
+        if (xfHeader == null || xfHeader.isEmpty() || !xfHeader.contains(request.getRemoteAddr())) {
+            return request.getRemoteAddr();
+        }
+        return xfHeader.split(",")[0];
+    }
 
     
     @GetMapping("/init-check")
@@ -32,9 +45,20 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
-        String token = authService.authenticate(request.email(), request.password());
-        return ResponseEntity.ok(new AuthResponse(token));
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request, HttpServletRequest httpRequest) {
+        String ip = getClientIP(httpRequest);
+        if (loginAttemptService.isBlocked(ip)) {
+            throw new LockedException("Too many failed login attempts. Please wait 15 minutes.");
+        }
+        
+        try {
+            String token = authService.authenticate(request.email(), request.password());
+            loginAttemptService.loginSucceeded(ip);
+            return ResponseEntity.ok(new AuthResponse(token));
+        } catch (BadCredentialsException ex) {
+            loginAttemptService.loginFailed(ip);
+            throw ex;
+        }
     }
 
     @PostMapping("/create-client")
