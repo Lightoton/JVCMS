@@ -12,7 +12,9 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class MediaService {
 
@@ -60,7 +62,7 @@ public class MediaService {
             
             deleteExistingFilesByKey(cleanKey);
         } catch (IOException e) {
-            System.err.println("Failed to delete existing files for key: " + cleanKey);
+            log.error("Failed to delete existing files for key: {}", cleanKey, e);
         }
 
         String newFileName = cleanKey + ".webp";
@@ -76,7 +78,7 @@ public class MediaService {
 
         } catch (Exception e) {
             
-            System.err.println("WebP conversion failed, falling back to original format: " + e.getMessage());
+            log.warn("WebP conversion failed, falling back to original format: {}", e.getMessage(), e);
             
             String originalFileName = StringUtils.cleanPath(file.getOriginalFilename() != null ? file.getOriginalFilename() : "");
             String extension = StringUtils.getFilenameExtension(originalFileName);
@@ -118,7 +120,7 @@ public class MediaService {
                     .map(path -> "/uploads/" + path.getFileName().toString())
                     .toList();
         } catch (IOException e) {
-            System.err.println("Failed to list media files: " + e.getMessage());
+            log.error("Failed to list media files: {}", e.getMessage(), e);
             return List.of();
         }
     }
@@ -131,7 +133,7 @@ public class MediaService {
         try {
             Files.deleteIfExists(targetLocation);
         } catch (IOException e) {
-            System.err.println("Failed to delete media file: " + e.getMessage());
+            log.error("Failed to delete media file: {}", e.getMessage(), e);
         }
     }
 
