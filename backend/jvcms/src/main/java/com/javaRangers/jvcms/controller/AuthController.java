@@ -43,10 +43,10 @@ public class AuthController {
         String token = authService.initFirstAdmin(request.email(), request.password());
         org.springframework.http.ResponseCookie springCookie = org.springframework.http.ResponseCookie.from("jwt_token", token)
                 .httpOnly(true)
-                .secure(true) // require HTTPS
+                .secure(true)
                 .path("/")
-                .sameSite("Lax") // Protect against CSRF
-                .maxAge(86400) // 24 hours
+                .sameSite("Lax")
+                .maxAge(java.time.Duration.ofDays(1))
                 .build();
         httpResponse.addHeader(org.springframework.http.HttpHeaders.SET_COOKIE, springCookie.toString());
         return ResponseEntity.ok(new AuthResponse(token));
@@ -65,10 +65,10 @@ public class AuthController {
             
             org.springframework.http.ResponseCookie springCookie = org.springframework.http.ResponseCookie.from("jwt_token", token)
                     .httpOnly(true)
-                    .secure(true) // require HTTPS
+                    .secure(true)
                     .path("/")
-                    .sameSite("Lax") // Protect against CSRF
-                    .maxAge(86400) // 24 hours
+                    .sameSite("Lax")
+                    .maxAge(java.time.Duration.ofDays(1))
                     .build();
             httpResponse.addHeader(org.springframework.http.HttpHeaders.SET_COOKIE, springCookie.toString());
             
@@ -86,7 +86,7 @@ public class AuthController {
                 .secure(true)
                 .path("/")
                 .sameSite("Lax")
-                .maxAge(0) // Expire immediately
+                .maxAge(0)
                 .build();
         httpResponse.addHeader(org.springframework.http.HttpHeaders.SET_COOKIE, springCookie.toString());
         return ResponseEntity.noContent().build();
