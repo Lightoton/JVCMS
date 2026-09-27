@@ -12,7 +12,6 @@ public class LoginAttemptService {
 
     private final int MAX_ATTEMPT = 5;
 
-    // Cache to store IP address and number of failed attempts
     private final LoadingCache<String, Integer> attemptsCache;
 
     public LoginAttemptService() {
