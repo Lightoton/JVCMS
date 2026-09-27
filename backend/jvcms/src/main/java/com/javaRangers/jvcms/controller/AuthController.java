@@ -39,13 +39,21 @@ public class AuthController {
     }
 
     @PostMapping("/init")
-    public ResponseEntity<AuthResponse> initFirstAdmin(@RequestBody AuthRequest request) {
+    public ResponseEntity<AuthResponse> initFirstAdmin(@RequestBody AuthRequest request, jakarta.servlet.http.HttpServletResponse httpResponse) {
         String token = authService.initFirstAdmin(request.email(), request.password());
+        org.springframework.http.ResponseCookie springCookie = org.springframework.http.ResponseCookie.from("jwt_token", token)
+                .httpOnly(true)
+                .secure(true) // require HTTPS
+                .path("/")
+                .sameSite("Lax") // Protect against CSRF
+                .maxAge(86400) // 24 hours
+                .build();
+        httpResponse.addHeader(org.springframework.http.HttpHeaders.SET_COOKIE, springCookie.toString());
         return ResponseEntity.ok(new AuthResponse(token));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request, HttpServletRequest httpRequest) {
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request, HttpServletRequest httpRequest, jakarta.servlet.http.HttpServletResponse httpResponse) {
         String ip = getClientIP(httpRequest);
         if (loginAttemptService.isBlocked(ip)) {
             throw new LockedException("Too many failed login attempts. Please wait 15 minutes.");
@@ -54,11 +62,34 @@ public class AuthController {
         try {
             String token = authService.authenticate(request.email(), request.password());
             loginAttemptService.loginSucceeded(ip);
+            
+            org.springframework.http.ResponseCookie springCookie = org.springframework.http.ResponseCookie.from("jwt_token", token)
+                    .httpOnly(true)
+                    .secure(true) // require HTTPS
+                    .path("/")
+                    .sameSite("Lax") // Protect against CSRF
+                    .maxAge(86400) // 24 hours
+                    .build();
+            httpResponse.addHeader(org.springframework.http.HttpHeaders.SET_COOKIE, springCookie.toString());
+            
             return ResponseEntity.ok(new AuthResponse(token));
         } catch (BadCredentialsException ex) {
             loginAttemptService.loginFailed(ip);
             throw ex;
         }
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(jakarta.servlet.http.HttpServletResponse httpResponse) {
+        org.springframework.http.ResponseCookie springCookie = org.springframework.http.ResponseCookie.from("jwt_token", "")
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .sameSite("Lax")
+                .maxAge(0) // Expire immediately
+                .build();
+        httpResponse.addHeader(org.springframework.http.HttpHeaders.SET_COOKIE, springCookie.toString());
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/create-client")
