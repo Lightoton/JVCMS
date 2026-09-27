@@ -44,11 +44,17 @@ export async function fetchApi<T>(endpoint: string, options: FetchOptions = {}):
   if (!res.ok) {
     
     const errorData = await res.json().catch(() => ({}));
-    throw new Error(errorData.error || `Ошибка сервера: ${res.status}`);
+    throw new Error(errorData.detail || errorData.error || `Ошибка сервера: ${res.status}`);
   }
 
-  
   if (res.status === 204) return null as T;
 
-  return res.json();
+  const text = await res.text();
+  if (!text) return null as T;
+  
+  try {
+    return JSON.parse(text);
+  } catch (e) {
+    return text as unknown as T;
+  }
 }
