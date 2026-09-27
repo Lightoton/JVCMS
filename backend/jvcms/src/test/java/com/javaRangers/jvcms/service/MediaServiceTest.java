@@ -61,8 +61,6 @@ class MediaServiceTest {
 
     @Test
     void testUploadImage_FallbackSavesOriginalFormat() throws IOException {
-        // Fallback triggers because this is not a fully valid image for WebP conversion,
-        // but it has valid PNG magic bytes to pass the signature validation.
         byte[] fakePng = new byte[] {
             (byte) 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A,
             0x00, 0x00, 0x00, 0x0D
