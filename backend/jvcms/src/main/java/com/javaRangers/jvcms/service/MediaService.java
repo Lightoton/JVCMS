@@ -38,7 +38,6 @@ public class MediaService {
             throw new IllegalArgumentException("File is empty");
         }
 
-        // Strict validation to prevent Path Traversal
         if (imageKey == null || !imageKey.matches("^[a-zA-Z0-9_-]+$")) {
             throw new IllegalArgumentException("Invalid image key. Only alphanumeric characters, dashes, and underscores are allowed.");
         }

@@ -45,13 +45,13 @@ export function UserList() {
 
   const handleChangeCredentials = (email: string, role: string) => {
     const newEmail = window.prompt(t.newEmailPrompt);
-    if (newEmail === null) return; // User cancelled
+    if (newEmail === null) return;
 
     const newPassword = window.prompt(t.newPasswordPrompt);
-    if (newPassword === null) return; // User cancelled
+    if (newPassword === null) return;
 
     if (!newEmail && !newPassword) {
-      return; // Nothing to change
+      return;
     }
 
     if (newPassword && newPassword.length > 0 && newPassword.length < 5) {
