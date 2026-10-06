@@ -62,8 +62,8 @@ export function MediaUploader() {
           <p className="text-sm font-medium text-gray-700 mb-2">{t.mediaUploaderUrlHint}</p>
           <div className="relative h-32 bg-gray-50 rounded-lg overflow-hidden border">
             <img 
-              src={`${process.env.NEXT_PUBLIC_UPLOADS_URL}${uploadedUrl}`} 
-              alt="Preview" 
+              src={`/api/proxy${uploadedUrl}`} 
+              alt="Preview"
               className="object-contain w-full h-full"
             />
           </div>

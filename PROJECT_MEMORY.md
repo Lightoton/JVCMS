@@ -59,3 +59,8 @@ When working with dependencies, tools, or best practices, ALWAYS search the web 
 - Removed defaults from .env.example
 - Added required env var docs to README
 - Removed AI files from .gitignore to track prompt engineering process
+
+## Stage 2 (fix/frontend-types) Completed
+- Created shared types for CMS schema (User, ContentItem, CmsField)
+- Replaced all usages of 'any' in frontend with strictly typed Record<string, unknown> or standard interfaces
+- Resolved React hook warnings (set-state-in-effect) in MediaLibrary and UserList

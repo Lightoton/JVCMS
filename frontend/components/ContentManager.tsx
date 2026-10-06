@@ -95,7 +95,7 @@ export function ContentManager() {
       );
     }
     if (fieldType === 'image') {
-       const baseUrl = process.env.NEXT_PUBLIC_UPLOADS_URL || 'http://localhost:8080';
+       const baseUrl = '/api/proxy';
        const stringValue = value as string | null | undefined;
        const imageUrl = stringValue?.startsWith('http') ? stringValue : (stringValue ? `${baseUrl}${stringValue}` : null);
        return (
@@ -173,7 +173,7 @@ export function ContentManager() {
                    {itemFields?.filter((f) => f.type === 'image').map((imgField) => {
                       const imgFieldName = imgField.name as string;
                       const val = item[imgFieldName] as string;
-                      const baseUrl = process.env.NEXT_PUBLIC_UPLOADS_URL || 'http://localhost:8080';
+                      const baseUrl = '/api/proxy';
                       const imageUrl = val?.startsWith('http') ? val : (val ? `${baseUrl}${val}` : null);
                       return (
                         <div key={imgFieldName} className="flex flex-col items-center">
