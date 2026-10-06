@@ -67,7 +67,7 @@ export function MediaLibrary() {
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {mediaFiles.map((url, idx) => {
-              const baseUrl = process.env.NEXT_PUBLIC_UPLOADS_URL || 'http://localhost:8080';
+              const baseUrl = '/api/proxy';
               const fullUrl = url.startsWith('http') ? url : `${baseUrl}${url}`;
               return (
                 <div key={idx} className="relative aspect-square rounded-lg overflow-hidden border border-gray-200 group bg-gray-50">
