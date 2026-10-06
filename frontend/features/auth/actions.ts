@@ -3,6 +3,7 @@
 import { cookies } from 'next/headers';
 import { fetchApi } from '@/shared/api/fetcher';
 import { redirect } from 'next/navigation';
+import { User } from '@/shared/types/cms';
 
 interface AuthResponse {
   token: string;
@@ -62,12 +63,12 @@ export async function loginAction(formData: FormData) {
 export async function logoutAction() {
   const cookieStore = await cookies();
   cookieStore.delete('jwt_token');
-  redirect('/'); 
+  redirect('/');
 }
 
 export async function getUsersAction() {
   try {
-    return await fetchApi<any[]>('/auth/users', { requireAuth: true });
+    return await fetchApi<User[]>('/auth/users', { requireAuth: true });
   } catch (error) {
     console.error(error);
     return [];
