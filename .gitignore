@@ -1,6 +1,4 @@
 ﻿.env
-
-PROJECT_MEMORY.md
-*.md
 .idea/
-!README.md
+.gemini/
+.agent/
