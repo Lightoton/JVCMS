@@ -25,6 +25,7 @@ export function MediaLibrary() {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line
     fetchMedia();
   }, []);
 

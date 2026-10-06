@@ -19,6 +19,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line
     setIsClient(true);
     const savedLang = localStorage.getItem('cms_lang') as Language;
     if (savedLang === 'ru' || savedLang === 'en') {

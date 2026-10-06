@@ -53,3 +53,9 @@ When working with dependencies, tools, or best practices, ALWAYS search the web 
 - P0: compose default JWT_SECRET/DB_PASSWORD + .env.example missing them; backend 8080 bound to 0.0.0.0; rate limiter keyed by frontend container IP (global lockout) + XFF spoof; UsernameNotFoundException in JWT filter -> 500; NEXT_PUBLIC_UPLOADS_URL inlined at build (Docker image always localhost).
 - P1: GlobalExceptionHandler leaks messages, catch-all breaks 4xx; backend Set-Cookie is dead code (server actions); open /auth/init takeover; no DTO validation; decompression bomb; proxy.ts host rewrite hack; AGENTS.md/CLAUDE.md/.idea tracked, '*.md' in .gitignore; Node 20 EOL.
 - fix/fetch-empty-body merged (PR #7).
+
+## Stage 1 (fix/env-followup) Completed
+- Fixed JWT_SECRET validation to require base64 string
+- Removed defaults from .env.example
+- Added required env var docs to README
+- Removed AI files from .gitignore to track prompt engineering process
