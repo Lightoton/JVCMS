@@ -324,14 +324,16 @@ Response:
 
 ## 🔐 Environment Variables
 
-All variables have sensible defaults for local development. Override them via a `.env` file in the project root or directly in `docker-compose.yml`.
+All variables are defined in the `.env` file in the project root.
+
+> **CRITICAL:** `DB_PASSWORD` and `JWT_SECRET` do not have default values in Docker Compose. The system will fail to start if they are omitted.
 
 | Variable | Default | Description |
 |---|---|---|
 | `DB_USER` | `postgres` | PostgreSQL username |
-| `DB_PASSWORD` | `root` | PostgreSQL password |
+| `DB_PASSWORD` | **(REQUIRED)** | PostgreSQL password |
 | `DB_NAME` | `jvcms_db` | Database name |
-| `JWT_SECRET` | `SuperSecretKey...` | JWT signing key (**change in production!**) |
+| `JWT_SECRET` | **(REQUIRED)** | JWT signing key. Must be a Base64 string at least 32 bytes long. Generate with `openssl rand -base64 32` |
 | `NEXT_PUBLIC_API_URL` | `http://localhost:8080/api/v1` | Backend URL as seen by the browser |
 | `INTERNAL_API_URL` | `http://backend:8080/api/v1` | Backend URL for server-side rendering (internal Docker network) |
 | `NEXT_PUBLIC_UPLOADS_URL` | `http://localhost:8080` | Base URL for image previews in the admin panel |
