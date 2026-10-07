@@ -69,3 +69,7 @@ When working with dependencies, tools, or best practices, ALWAYS search the web 
 - Created Next.js proxy route /api/proxy/uploads/[...path] to fetch images dynamically from backend without exposing ports
 - Removed NEXT_PUBLIC_UPLOADS_URL from docker-compose.yml, README and all frontend components
 - Changed <img src> and <Image src> to use relative /api/proxy/uploads/... URLs to avoid build-time inlining of localhost
+
+## Stage 4 (fix/jwt-revocation) Completed
+- Added Flyway migration \V2__add_token_version.sql\ to introduce \	oken_version\ in \users\ table
+- Updated \User\ entity to implement \UserDetails\ and include \	okenVersion\`n- Injected \ersion\ claim into JWT tokens inside \JwtService\`n- Enforced strict \	okenVersion\ matching in \JwtAuthenticationFilter\`n- Configured \AuthService.updateUser\ to increment \	okenVersion\ upon email or password changes, thereby instantly revoking any previously issued JWTs
