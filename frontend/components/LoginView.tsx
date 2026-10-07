@@ -70,6 +70,18 @@ export function LoginView({ isInitialized }: { isInitialized: boolean }) {
                 placeholder={t.passwordLabel}
               />
             </div>
+            {!isInitialized && (
+              <div>
+                <label htmlFor="setupToken" className="sr-only">Setup Token</label>
+                <input
+                  id="setupToken"
+                  name="setupToken"
+                  type="password"
+                  className="relative block w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
+                  placeholder="Setup Token (if configured)"
+                />
+              </div>
+            )}
           </div>
 
           {error && (
