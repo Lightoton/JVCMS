@@ -83,3 +83,9 @@ When working with dependencies, tools, or best practices, ALWAYS search the web 
 - Stopped leaking Exception.getMessage() on HTTP 500 errors to prevent information disclosure
 - Changed responses to strictly return ResponseEntity<Map<String, String>> instead of Spring ProblemDetail
 - Mapped DataIntegrityViolationException to HTTP 409 Conflict
+
+## Stage 7 (fix/validation) Completed
+- Added spring-boot-starter-validation to pom.xml
+- Enforced @Email, @NotBlank, and @Size constraints on AuthRequest and UpdateUserRequest
+- Applied @Valid in AuthController to intercept malformed payloads
+- Added MethodArgumentNotValidException handler in GlobalExceptionHandler to return 400 Bad Request with precise field errors
