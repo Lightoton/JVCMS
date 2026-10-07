@@ -7,8 +7,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Service
 public class LoginAttemptService {
+
+    private static final Logger log = LoggerFactory.getLogger(LoginAttemptService.class);
 
     private final int MAX_ATTEMPT = 5;
 
@@ -34,6 +39,7 @@ public class LoginAttemptService {
         try {
             attempts = attemptsCache.get(key);
         } catch (Exception e) {
+            log.warn("Login attempt check failed for IP {}: {}", key, e.getMessage());
             attempts = 0;
         }
         attempts++;
@@ -44,6 +50,7 @@ public class LoginAttemptService {
         try {
             return attemptsCache.get(key) >= MAX_ATTEMPT;
         } catch (Exception e) {
+            log.warn("Failed to check if IP {} is blocked: {}", key, e.getMessage());
             return false;
         }
     }
