@@ -1,10 +1,10 @@
-﻿<div align="center">
+<div align="center">
 
-# вљЎ JVCMS вЂ” Lightweight Schema-Driven Headless CMS
+# ⚡ JVCMS — Lightweight Schema-Driven Headless CMS
 
 **A minimal, self-hosted headless CMS that reads your data structure from a single JSON file and automatically generates a full admin panel.**
 
-Built with **Java (Spring Boot)** В· **Next.js (React)** В· **PostgreSQL**
+Built with **Java (Spring Boot)** · **Next.js (React)** · **PostgreSQL**
 
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue?logo=docker)](https://www.docker.com/)
 [![Java](https://img.shields.io/badge/Java-21-orange?logo=openjdk)](https://openjdk.org/)
@@ -15,7 +15,7 @@ Built with **Java (Spring Boot)** В· **Next.js (React)** В· **PostgreSQL**
 
 ---
 
-## рџ“– Table of Contents
+## 📖 Table of Contents
 
 - [What Is This?](#-what-is-this)
 - [Key Features](#-key-features)
@@ -26,33 +26,33 @@ Built with **Java (Spring Boot)** В· **Next.js (React)** В· **PostgreSQL**
 - [API Reference](#-api-reference)
 - [Environment Variables](#-environment-variables)
 - [Project Structure](#-project-structure)
-- [рџ‡·рџ‡є Р”РѕРєСѓРјРµРЅС‚Р°С†РёСЏ РЅР° СЂСѓСЃСЃРєРѕРј](#-РґРѕРєСѓРјРµРЅС‚Р°С†РёСЏ-РЅР°-СЂСѓСЃСЃРєРѕРј)
+- [🇷🇺 Документация на русском](#-документация-на-русском)
 
 ---
 
-## рџ’Ў What Is This?
+## 💡 What Is This?
 
-JVCMS is a **headless CMS** вЂ” it stores and manages your website's content (text, images, lists), but it does **not** generate the website itself. Instead, your website fetches content from the CMS via a simple REST API.
+JVCMS is a **headless CMS** — it stores and manages your website's content (text, images, lists), but it does **not** generate the website itself. Instead, your website fetches content from the CMS via a simple REST API.
 
 The key difference from traditional CMS platforms (WordPress, Strapi, etc.) is that JVCMS is **extremely lightweight and schema-driven**:
 
 1. You create a single file (`cms.config.json`) that describes your data models.
-2. JVCMS reads that file and **automatically generates** the entire admin panel UI вЂ” input fields, image uploaders, array editors вЂ” without writing any admin code.
+2. JVCMS reads that file and **automatically generates** the entire admin panel UI — input fields, image uploaders, array editors — without writing any admin code.
 3. Your website makes simple `GET` requests to retrieve the content as JSON.
 
 **This means:** one CMS backend serves any number of websites. Just swap out the `cms.config.json` file with a new schema, and the admin panel adapts instantly.
 
-### вњЌпёЏ Inline Editing Support
+### ✍️ Inline Editing Support
 Because JVCMS is strictly API-driven, you don't even have to use the built-in admin panel to edit content! You can build **inline editing** directly into your client's website. The client simply clicks on a text block on their live website, types new text, and your frontend sends a `PUT` request to the JVCMS REST API to save it. JVCMS acts purely as a secure, fast data storage and image optimization middleman.
 
 ---
 
-## вњЁ Key Features
+## ✨ Key Features
 
 | Feature | Description |
 |---|---|
-| **Schema-Driven UI** | Define models in `cms.config.json` в†’ admin panel is generated automatically. No code changes needed. |
-| **Headless Architecture** | Content is delivered via REST API. Use it with React, Vue, iOS, Android вЂ” any frontend. |
+| **Schema-Driven UI** | Define models in `cms.config.json` → admin panel is generated automatically. No code changes needed. |
+| **Headless Architecture** | Content is delivered via REST API. Use it with React, Vue, iOS, Android — any frontend. |
 | **WebP Image Compression** | Uploaded JPEG/PNG images are automatically converted to WebP on the backend, reducing file size. |
 | **Multi-Language Admin** | The admin panel supports English and Russian out of the box, switchable in real time. |
 | **Role-Based Access** | Two roles: **ADMIN** (full control, user management) and **CLIENT** (content editing only). |
@@ -62,42 +62,42 @@ Because JVCMS is strictly API-driven, you don't even have to use the built-in ad
 
 ---
 
-## рџЏ— Architecture
+## 🏗 Architecture
 
 ```
-в”Њв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”ђ
-в”‚                    Your Website                          в”‚
-в”‚              (React, Vue, plain HTML, etc.)               в”‚
-в”‚                                                          в”‚
-в”‚   fetch("http://your-server:8080/api/v1/content/menu")   в”‚
-в”‚   fetch("http://your-server:8080/uploads/pizza.webp")    в”‚
-в””в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”¬в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”
-                          в”‚  REST API (JSON)
-                          в–ј
-в”Њв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”ђ
-в”‚               JVCMS Backend (Spring Boot)                в”‚
-в”‚                                                          в”‚
-в”‚  вЂў /api/v1/content/{id}  вЂ” CRUD for content (JSON)       в”‚
-в”‚  вЂў /api/v1/auth/*        вЂ” Login, register, users        в”‚
-в”‚  вЂў /api/v1/media/*       вЂ” Upload & manage images        в”‚
-в”‚  вЂў /uploads/*            вЂ” Static file serving (WebP)    в”‚
-в”‚                                                          в”‚
-в”‚              PostgreSQL  в†ђв”Ђв”Ђ  Data storage (JSONB)        в”‚
-в””в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”
-                          в–І
-                          в”‚  Internal API
-в”Њв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”ђ
-в”‚             JVCMS Admin Panel (Next.js)                  в”‚
-в”‚                                                          в”‚
-в”‚  вЂў Reads cms.config.json в†’ generates UI dynamically      в”‚
-в”‚  вЂў Content editing, media library, user management       в”‚
-в”‚  вЂў i18n: English / Russian                               в”‚
-в””в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”
+┌──────────────────────────────────────────────────────────┐
+│                    Your Website                          │
+│              (React, Vue, plain HTML, etc.)               │
+│                                                          │
+│   fetch("http://your-server:8080/api/v1/content/menu")   │
+│   fetch("http://your-server:8080/uploads/pizza.webp")    │
+└─────────────────────────┬────────────────────────────────┘
+                          │  REST API (JSON)
+                          ▼
+┌──────────────────────────────────────────────────────────┐
+│               JVCMS Backend (Spring Boot)                │
+│                                                          │
+│  • /api/v1/content/{id}  — CRUD for content (JSON)       │
+│  • /api/v1/auth/*        — Login, register, users        │
+│  • /api/v1/media/*       — Upload & manage images        │
+│  • /uploads/*            — Static file serving (WebP)    │
+│                                                          │
+│              PostgreSQL  ←──  Data storage (JSONB)        │
+└──────────────────────────────────────────────────────────┘
+                          ▲
+                          │  Internal API
+┌──────────────────────────────────────────────────────────┐
+│             JVCMS Admin Panel (Next.js)                  │
+│                                                          │
+│  • Reads cms.config.json → generates UI dynamically      │
+│  • Content editing, media library, user management       │
+│  • i18n: English / Russian                               │
+└──────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## рџљЂ Quick Start
+## 🚀 Quick Start
 
 ### Prerequisites
 
@@ -127,14 +127,14 @@ This starts three containers:
 
 1. Open `http://localhost:3000` in your browser.
 2. Since the database is empty, the system will display a **registration form**.
-3. Enter your email and password вЂ” this creates the **first ADMIN** account.
+3. Enter your email and password — this creates the **first ADMIN** account.
 4. You are now logged in and can start managing content.
 
 > After the first admin is created, the registration form is disabled. All future accounts must be created by the admin through the Users tab.
 
 ---
 
-## вљ™ Configuration (`cms.config.json`)
+## ⚙ Configuration (`cms.config.json`)
 
 This is the heart of the system. Place this file in `frontend/cms.config.json`. It defines what content models the admin panel will display and what fields each model has.
 
@@ -145,7 +145,7 @@ This is the heart of the system. Place this file in `frontend/cms.config.json`. 
   "models": [
     {
       "id": "unique_model_id",
-      "label_ru": "РќР°Р·РІР°РЅРёРµ РЅР° СЂСѓСЃСЃРєРѕРј",
+      "label_ru": "Название на русском",
       "label_en": "English Label",
       "fields": [
         { "name": "fieldName", "label_ru": "...", "label_en": "...", "type": "text" },
@@ -182,29 +182,29 @@ This is the heart of the system. Place this file in `frontend/cms.config.json`. 
   "models": [
     {
       "id": "menu",
-      "label_ru": "РњРµРЅСЋ",
+      "label_ru": "Меню",
       "label_en": "Menu",
       "fields": [
         {
           "name": "pizzas",
-          "label_ru": "РџРёС†С†С‹",
+          "label_ru": "Пиццы",
           "label_en": "Pizzas",
           "type": "array",
           "itemFields": [
-            { "name": "name", "label_ru": "РќР°Р·РІР°РЅРёРµ", "label_en": "Name", "type": "text" },
-            { "name": "price", "label_ru": "Р¦РµРЅР°", "label_en": "Price", "type": "text" },
-            { "name": "image", "label_ru": "Р¤РѕС‚Рѕ", "label_en": "Photo", "type": "image" }
+            { "name": "name", "label_ru": "Название", "label_en": "Name", "type": "text" },
+            { "name": "price", "label_ru": "Цена", "label_en": "Price", "type": "text" },
+            { "name": "image", "label_ru": "Фото", "label_en": "Photo", "type": "image" }
           ]
         }
       ]
     },
     {
       "id": "hero",
-      "label_ru": "Р“Р»Р°РІРЅС‹Р№ СЌРєСЂР°РЅ",
+      "label_ru": "Главный экран",
       "label_en": "Hero Section",
       "fields": [
-        { "name": "title", "label_ru": "Р—Р°РіРѕР»РѕРІРѕРє", "label_en": "Title", "type": "text" },
-        { "name": "backgroundImage", "label_ru": "Р¤РѕРЅ", "label_en": "Background", "type": "image" }
+        { "name": "title", "label_ru": "Заголовок", "label_en": "Title", "type": "text" },
+        { "name": "backgroundImage", "label_ru": "Фон", "label_en": "Background", "type": "image" }
       ]
     }
   ]
@@ -215,7 +215,7 @@ After defining this config and rebuilding the frontend container, the admin pane
 
 ---
 
-## рџ”— Integrating With Your Website
+## 🔗 Integrating With Your Website
 
 JVCMS is **headless**, which means your website fetches content from the CMS API at runtime (or at build time for static sites). Here is what that integration looks like in practice:
 
@@ -227,7 +227,7 @@ JVCMS is **headless**, which means your website fetches content from the CMS API
    ```js
    // Before (hardcoded)
    const pizzas = [
-     { name: "Margherita", price: "9.50в‚¬", image: "/img/margherita.jpg" },
+     { name: "Margherita", price: "9.50€", image: "/img/margherita.jpg" },
      // ...
    ];
 
@@ -243,11 +243,11 @@ JVCMS is **headless**, which means your website fetches content from the CMS API
 
 ### Key Points
 
-- Your website's **design, layout, and HTML/CSS stay exactly the same**. Only the data source changes вЂ” from hardcoded values to API responses.
+- Your website's **design, layout, and HTML/CSS stay exactly the same**. Only the data source changes — from hardcoded values to API responses.
 - The `GET /api/v1/content/{schemaId}` endpoint is **public** (no authentication required), so your website can call it directly from the browser or during server-side rendering.
 - For **static site generators** (Astro, Hugo, Gatsby), you would call the API at build time and generate static HTML pages with the fetched content.
 
-### рџ¤– Building a Frontend with AI Agents
+### 🤖 Building a Frontend with AI Agents
 
 If you are using an AI coding assistant (like GitHub Copilot, Cursor, or ChatGPT) to build the public-facing website for this CMS, you can copy and paste the following prompt to give the AI the exact context it needs to integrate with JVCMS flawlessly.
 
@@ -267,7 +267,7 @@ If you are using an AI coding assistant (like GitHub Copilot, Cursor, or ChatGPT
 
 ---
 
-## рџ“Ў API Reference
+## 📡 API Reference
 
 ### Content
 
@@ -310,7 +310,7 @@ Response:
   "pizzas": [
     {
       "name": "Margherita",
-      "price": "9.50в‚¬",
+      "price": "9.50€",
       "description": "Classic Italian pizza",
       "image": "/uploads/margherita.webp"
     }
@@ -322,7 +322,7 @@ Response:
 
 ---
 
-## рџ”ђ Environment Variables
+## 🔐 Environment Variables
 
 All variables are defined in the `.env` file in the project root.
 
@@ -333,7 +333,6 @@ All variables are defined in the `.env` file in the project root.
 | `DB_USER` | `postgres` | PostgreSQL username |
 | `DB_PASSWORD` | **(REQUIRED)** | PostgreSQL password |
 | `DB_NAME` | `jvcms_db` | Database name |
-| `CMS_SETUP_TOKEN` | *(optional)* | Security token required to create the first admin user |
 | `JWT_SECRET` | **(REQUIRED)** | JWT signing key. Must be a Base64 string at least 32 bytes long. Generate with `openssl rand -base64 32` |
 | `NEXT_PUBLIC_API_URL` | `http://localhost:8080/api/v1` | Backend URL as seen by the browser |
 | `INTERNAL_API_URL` | `http://backend:8080/api/v1` | Backend URL for server-side rendering (internal Docker network) |
@@ -343,51 +342,51 @@ All variables are defined in the `.env` file in the project root.
 
 ---
 
-## рџ“Ѓ Project Structure
+## 📁 Project Structure
 
 ```
 CMS/
-в”њв”Ђв”Ђ docker-compose.yml              # Orchestrates all services
-в”њв”Ђв”Ђ README.md
-в”‚
-в”њв”Ђв”Ђ backend/jvcms/                  # Spring Boot application
-в”‚   в”њв”Ђв”Ђ Dockerfile
-в”‚   в”њв”Ђв”Ђ pom.xml
-в”‚   в””в”Ђв”Ђ src/main/java/.../
-в”‚       в”њв”Ђв”Ђ config/                 # Security, CORS, exception handling
-в”‚       в”њв”Ђв”Ђ controller/             # REST endpoints
-в”‚       в”њв”Ђв”Ђ dto/                    # Request/response objects
-в”‚       в”њв”Ђв”Ђ entity/                 # JPA entities (User, ContentItem)
-в”‚       в”њв”Ђв”Ђ repository/             # Spring Data JPA repositories
-в”‚       в”њв”Ђв”Ђ security/               # JWT filter
-в”‚       в””в”Ђв”Ђ service/                # Business logic
-в”‚
-в””в”Ђв”Ђ frontend/                       # Next.js admin panel
-    в”њв”Ђв”Ђ Dockerfile
-    в”њв”Ђв”Ђ cms.config.json             # в†ђ YOUR DATA SCHEMA
-    в”њв”Ђв”Ђ components/                 # UI components (ContentManager, MediaLibrary, etc.)
-    в”њв”Ђв”Ђ features/                   # Server actions (auth, content, media, users)
-    в””в”Ђв”Ђ shared/
-        в”њв”Ђв”Ђ api/                    # API fetcher
-        в””в”Ђв”Ђ i18n/                   # Translations (ru.ts, en.ts)
+├── docker-compose.yml              # Orchestrates all services
+├── README.md
+│
+├── backend/jvcms/                  # Spring Boot application
+│   ├── Dockerfile
+│   ├── pom.xml
+│   └── src/main/java/.../
+│       ├── config/                 # Security, CORS, exception handling
+│       ├── controller/             # REST endpoints
+│       ├── dto/                    # Request/response objects
+│       ├── entity/                 # JPA entities (User, ContentItem)
+│       ├── repository/             # Spring Data JPA repositories
+│       ├── security/               # JWT filter
+│       └── service/                # Business logic
+│
+└── frontend/                       # Next.js admin panel
+    ├── Dockerfile
+    ├── cms.config.json             # ← YOUR DATA SCHEMA
+    ├── components/                 # UI components (ContentManager, MediaLibrary, etc.)
+    ├── features/                   # Server actions (auth, content, media, users)
+    └── shared/
+        ├── api/                    # API fetcher
+        └── i18n/                   # Translations (ru.ts, en.ts)
 ```
 
 ---
 
 ---
 
-<a name="-РґРѕРєСѓРјРµРЅС‚Р°С†РёСЏ-РЅР°-СЂСѓСЃСЃРєРѕРј"></a>
-## рџ‡·рџ‡є Р”РѕРєСѓРјРµРЅС‚Р°С†РёСЏ РЅР° СЂСѓСЃСЃРєРѕРј
+<a name="-документация-на-русском"></a>
+## 🇷🇺 Документация на русском
 
-### Р§С‚Рѕ СЌС‚Рѕ С‚Р°РєРѕРµ?
+### Что это такое?
 
-JVCMS вЂ” СЌС‚Рѕ **Р»РµРіРєРѕРІРµСЃРЅР°СЏ headless CMS**, РєРѕС‚РѕСЂР°СЏ СѓРїСЂР°РІР»СЏРµС‚СЃСЏ РѕРґРЅРёРј JSON-С„Р°Р№Р»РѕРј РєРѕРЅС„РёРіСѓСЂР°С†РёРё. Р’С‹ РѕРїРёСЃС‹РІР°РµС‚Рµ СЃС‚СЂСѓРєС‚СѓСЂСѓ РґР°РЅРЅС‹С… РІР°С€РµРіРѕ СЃР°Р№С‚Р° (РЅР°РїСЂРёРјРµСЂ, РјРµРЅСЋ СЂРµСЃС‚РѕСЂР°РЅР°, Р±Р»РѕРє В«Рћ РЅР°СЃВ», РєРѕРЅС‚Р°РєС‚С‹ РІ С„СѓС‚РµСЂРµ) РІ С„Р°Р№Р»Рµ `cms.config.json`, Рё СЃРёСЃС‚РµРјР° **Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё РіРµРЅРµСЂРёСЂСѓРµС‚** РїР°РЅРµР»СЊ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР° СЃ РЅСѓР¶РЅС‹РјРё РїРѕР»СЏРјРё РІРІРѕРґР°, Р·Р°РіСЂСѓР·РєРѕР№ РєР°СЂС‚РёРЅРѕРє Рё РґРёРЅР°РјРёС‡РµСЃРєРёРјРё СЃРїРёСЃРєР°РјРё.
+JVCMS — это **легковесная headless CMS**, которая управляется одним JSON-файлом конфигурации. Вы описываете структуру данных вашего сайта (например, меню ресторана, блок «О нас», контакты в футере) в файле `cms.config.json`, и система **автоматически генерирует** панель администратора с нужными полями ввода, загрузкой картинок и динамическими списками.
 
-Р’Р°С€ СЃР°Р№С‚ РїРѕР»СѓС‡Р°РµС‚ РґР°РЅРЅС‹Рµ С‡РµСЂРµР· РїСЂРѕСЃС‚С‹Рµ HTTP-Р·Р°РїСЂРѕСЃС‹ Рє REST API.
+Ваш сайт получает данные через простые HTTP-запросы к REST API.
 
-### РљР°Рє Р·Р°РїСѓСЃС‚РёС‚СЊ
+### Как запустить
 
-**РўСЂРµР±РѕРІР°РЅРёСЏ:** Docker Рё Docker Compose.
+**Требования:** Docker и Docker Compose.
 
 ```bash
 git clone https://github.com/Lightoton/jvcms.git
@@ -395,61 +394,61 @@ cd jvcms
 docker-compose up -d --build
 ```
 
-> РџРѕ СѓРјРѕР»С‡Р°РЅРёСЋ Р±СЌРєРµРЅРґ РґРѕСЃС‚СѓРїРµРЅ РЅР° РїРѕСЂС‚Сѓ `8080`, Р° Р°РґРјРёРЅРєР° вЂ” РЅР° РїРѕСЂС‚Сѓ `3000`. РџРѕСЂС‚С‹ РјРѕР¶РЅРѕ РёР·РјРµРЅРёС‚СЊ РІ С„Р°Р№Р»Рµ `docker-compose.yml`.
+> По умолчанию бэкенд доступен на порту `8080`, а админка — на порту `3000`. Порты можно изменить в файле `docker-compose.yml`.
 
-РћС‚РєСЂРѕР№С‚Рµ `http://localhost:3000`. РџСЂРё РїРµСЂРІРѕРј Р·Р°РїСѓСЃРєРµ СЃРёСЃС‚РµРјР° РїСЂРµРґР»РѕР¶РёС‚ СЃРѕР·РґР°С‚СЊ Р°РєРєР°СѓРЅС‚ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР°. РџРѕСЃР»Рµ СЌС‚РѕРіРѕ РІС‹ РјРѕР¶РµС‚Рµ РЅР°РїРѕР»РЅСЏС‚СЊ РєРѕРЅС‚РµРЅС‚.
+Откройте `http://localhost:3000`. При первом запуске система предложит создать аккаунт администратора. После этого вы можете наполнять контент.
 
-### РљР°Рє РїРѕРґРєР»СЋС‡РёС‚СЊ Рє СЃРІРѕРµРјСѓ СЃР°Р№С‚Сѓ
+### Как подключить к своему сайту
 
-1. РЎРѕР·РґР°Р№С‚Рµ С„Р°Р№Р» `cms.config.json`, РѕРїРёСЃС‹РІР°СЋС‰РёР№ СЃС‚СЂСѓРєС‚СѓСЂСѓ РґР°РЅРЅС‹С… РІР°С€РµРіРѕ СЃР°Р№С‚Р°.
-2. Р’ РєРѕРґРµ РІР°С€РµРіРѕ СЃР°Р№С‚Р° Р·Р°РјРµРЅРёС‚Рµ Р·Р°С…Р°СЂРґРєРѕР¶РµРЅРЅС‹Рµ РґР°РЅРЅС‹Рµ (С‚РµРєСЃС‚С‹, РєР°СЂС‚РёРЅРєРё, СЃРїРёСЃРєРё С‚РѕРІР°СЂРѕРІ) РЅР° РІС‹Р·РѕРІС‹ API:
+1. Создайте файл `cms.config.json`, описывающий структуру данных вашего сайта.
+2. В коде вашего сайта замените захардкоженные данные (тексты, картинки, списки товаров) на вызовы API:
    ```js
    const res = await fetch("http://your-server:8080/api/v1/content/menu");
    const data = await res.json();
    ```
-3. РР·РѕР±СЂР°Р¶РµРЅРёСЏ, Р·Р°РіСЂСѓР¶РµРЅРЅС‹Рµ С‡РµСЂРµР· Р°РґРјРёРЅРєСѓ, РґРѕСЃС‚СѓРїРЅС‹ РїРѕ Р°РґСЂРµСЃСѓ `http://your-server:8080/uploads/filename.webp`.
+3. Изображения, загруженные через админку, доступны по адресу `http://your-server:8080/uploads/filename.webp`.
 
-Р”РёР·Р°Р№РЅ Рё РІРµСЂСЃС‚РєР° РІР°С€РµРіРѕ СЃР°Р№С‚Р° **РЅРµ РјРµРЅСЏСЋС‚СЃСЏ** вЂ” РјРµРЅСЏРµС‚СЃСЏ С‚РѕР»СЊРєРѕ РёСЃС‚РѕС‡РЅРёРє РґР°РЅРЅС‹С…. Р’РјРµСЃС‚Рѕ Р·Р°С…Р°СЂРґРєРѕР¶РµРЅРЅС‹С… Р·РЅР°С‡РµРЅРёР№ РІР°С€ СЃР°Р№С‚ Р±РµСЂРµС‚ РёС… РёР· CMS.
+Дизайн и верстка вашего сайта **не меняются** — меняется только источник данных. Вместо захардкоженных значений ваш сайт берет их из CMS.
 
-### рџ¤– Р Р°Р·СЂР°Р±РѕС‚РєР° С„СЂРѕРЅС‚РµРЅРґР° СЃ РїРѕРјРѕС‰СЊСЋ AI Р°РіРµРЅС‚РѕРІ
+### 🤖 Разработка фронтенда с помощью AI агентов
 
-Р•СЃР»Рё РІС‹ РёСЃРїРѕР»СЊР·СѓРµС‚Рµ AI-Р°СЃСЃРёСЃС‚РµРЅС‚Р° (РЅР°РїСЂРёРјРµСЂ, GitHub Copilot, Cursor РёР»Рё ChatGPT) РґР»СЏ СЃРѕР·РґР°РЅРёСЏ РєР»РёРµРЅС‚СЃРєРѕРіРѕ СЃР°Р№С‚Р° РїРѕРґ СЌС‚Сѓ CMS, РїСЂРѕСЃС‚Рѕ СЃРєРѕРїРёСЂСѓР№С‚Рµ Рё РѕС‚РїСЂР°РІСЊС‚Рµ РµРјСѓ СЌС‚РѕС‚ РїСЂРѕРјРїС‚. Р­С‚Рѕ РґР°СЃС‚ РЅРµР№СЂРѕСЃРµС‚Рё РёРґРµР°Р»СЊРЅС‹Р№ РєРѕРЅС‚РµРєСЃС‚ РґР»СЏ РїСЂР°РІРёР»СЊРЅРѕР№ РёРЅС‚РµРіСЂР°С†РёРё.
+Если вы используете AI-ассистента (например, GitHub Copilot, Cursor или ChatGPT) для создания клиентского сайта под эту CMS, просто скопируйте и отправьте ему этот промпт. Это даст нейросети идеальный контекст для правильной интеграции.
 
-**РџСЂРѕРјРїС‚ РґР»СЏ AI-Р°РіРµРЅС‚Р°:**
-> "РќР°РїРёС€Рё РґР»СЏ РјРµРЅСЏ РєР»РёРµРЅС‚СЃРєРёР№ С„СЂРѕРЅС‚РµРЅРґ (СЃР°Р№С‚). РЇ РёСЃРїРѕР»СЊР·СѓСЋ JVCMS вЂ” РіРѕС‚РѕРІСѓСЋ headless CMS.
+**Промпт для AI-агента:**
+> "Напиши для меня клиентский фронтенд (сайт). Я использую JVCMS — готовую headless CMS.
 > 
-> **РЎС‚СЂРѕРіРёРµ РїСЂР°РІРёР»Р°:**
-> 1. РќР• СЃРѕР·РґР°РІР°Р№ Р±СЌРєРµРЅРґ, Р±Р°Р·Сѓ РґР°РЅРЅС‹С… РёР»Рё РїР°РЅРµР»СЊ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР°. Р‘СЌРєРµРЅРґ (Spring Boot) Рё Р°РґРјРёРЅРєР° (Next.js) СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓСЋС‚ Рё РїРѕР»РЅРѕСЃС‚СЊСЋ СЂР°Р±РѕС‚Р°СЋС‚. РќРµ РёР·РјРµРЅСЏР№ РёС… РєРѕРґ.
-> 2. РўРІРѕСЏ Р·Р°РґР°С‡Р° вЂ” РўРћР›Р¬РљРћ РЅР°РїРёСЃР°С‚СЊ РїСѓР±Р»РёС‡РЅС‹Р№ СЃР°Р№С‚ Рё РЅР°СЃС‚СЂРѕРёС‚СЊ РїРѕР»СѓС‡РµРЅРёРµ РґР°РЅРЅС‹С… РёР· РіРѕС‚РѕРІРѕРіРѕ REST API.
+> **Строгие правила:**
+> 1. НЕ создавай бэкенд, базу данных или панель администратора. Бэкенд (Spring Boot) и админка (Next.js) уже существуют и полностью работают. Не изменяй их код.
+> 2. Твоя задача — ТОЛЬКО написать публичный сайт и настроить получение данных из готового REST API.
 > 
-> **РљР°Рє СЂР°Р±РѕС‚Р°РµС‚ JVCMS:**
-> - РЎС‚СЂСѓРєС‚СѓСЂР° РґР°РЅРЅС‹С… (СЃС…РµРјР°) РѕРїРёСЃР°РЅР° РІ С„Р°Р№Р»Рµ `cms.config.json`. РџСЂРѕС‡РёС‚Р°Р№ СЌС‚РѕС‚ С„Р°Р№Р», С‡С‚РѕР±С‹ РїРѕРЅСЏС‚СЊ, РєР°РєРёРµ РґР°РЅРЅС‹Рµ РЅР°Рј РґРѕСЃС‚СѓРїРЅС‹.
-> - Р§С‚РѕР±С‹ РїРѕР»СѓС‡РёС‚СЊ РєРѕРЅС‚РµРЅС‚ РґР»СЏ РѕРїСЂРµРґРµР»РµРЅРЅРѕР№ РјРѕРґРµР»Рё (РЅР°РїСЂРёРјРµСЂ, `hero` РёР»Рё `menu`), СЃРґРµР»Р°Р№ `GET` Р·Р°РїСЂРѕСЃ РЅР° `http://localhost:8080/api/v1/content/{schemaId}`. API РїСѓР±Р»РёС‡РЅРѕРµ (Р±РµР· Р°РІС‚РѕСЂРёР·Р°С†РёРё) Рё РІРѕР·РІСЂР°С‰Р°РµС‚ JSON-РѕР±СЉРµРєС‚ СЃ РїРѕР»СЏРјРё РёР· СЃС…РµРјС‹.
-> - РџРѕР»СЏ СЃ РєР°СЂС‚РёРЅРєР°РјРё (`type: "image"`) РІРѕР·РІСЂР°С‰Р°СЋС‚ РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅС‹Р№ РїСѓС‚СЊ (РЅР°РїСЂРёРјРµСЂ, `/uploads/filename.webp`). Р§С‚РѕР±С‹ РѕС‚РѕР±СЂР°Р·РёС‚СЊ РєР°СЂС‚РёРЅРєСѓ РЅР° СЃР°Р№С‚Рµ, РґРѕР±Р°РІР»СЏР№ Рє СЌС‚РѕРјСѓ РїСѓС‚Рё URL Р±СЌРєРµРЅРґР° (РЅР°РїСЂРёРјРµСЂ, `http://localhost:8080/uploads/filename.webp`).
+> **Как работает JVCMS:**
+> - Структура данных (схема) описана в файле `cms.config.json`. Прочитай этот файл, чтобы понять, какие данные нам доступны.
+> - Чтобы получить контент для определенной модели (например, `hero` или `menu`), сделай `GET` запрос на `http://localhost:8080/api/v1/content/{schemaId}`. API публичное (без авторизации) и возвращает JSON-объект с полями из схемы.
+> - Поля с картинками (`type: "image"`) возвращают относительный путь (например, `/uploads/filename.webp`). Чтобы отобразить картинку на сайте, добавляй к этому пути URL бэкенда (например, `http://localhost:8080/uploads/filename.webp`).
 > 
-> Р”Р»СЏ РЅР°С‡Р°Р»Р° РїСЂРѕС‡РёС‚Р°Р№ С„Р°Р№Р» `cms.config.json`, С‡С‚РѕР±С‹ РїРѕРЅСЏС‚СЊ СЃС‚СЂСѓРєС‚СѓСЂСѓ РґР°РЅРЅС‹С…, Р° Р·Р°С‚РµРј РїСЂРёСЃС‚СѓРїР°Р№ Рє РІРµСЂСЃС‚РєРµ СЃР°Р№С‚Р° Рё РёРЅС‚РµРіСЂР°С†РёРё API-Р·Р°РїСЂРѕСЃРѕРІ."
+> Для начала прочитай файл `cms.config.json`, чтобы понять структуру данных, а затем приступай к верстке сайта и интеграции API-запросов."
 
-### РљРѕРЅС„РёРіСѓСЂР°С†РёСЏ
+### Конфигурация
 
-Р¤Р°Р№Р» `frontend/cms.config.json` РѕРїСЂРµРґРµР»СЏРµС‚, РєР°РєРёРµ РјРѕРґРµР»Рё Рё РїРѕР»СЏ Р±СѓРґСѓС‚ РѕС‚РѕР±СЂР°Р¶Р°С‚СЊСЃСЏ РІ РїР°РЅРµР»Рё Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР°.
+Файл `frontend/cms.config.json` определяет, какие модели и поля будут отображаться в панели администратора.
 
-РџРѕРґРґРµСЂР¶РёРІР°РµРјС‹Рµ С‚РёРїС‹ РїРѕР»РµР№:
-- `text` вЂ” С‚РµРєСЃС‚РѕРІРѕРµ РїРѕР»Рµ
-- `number` вЂ” С‡РёСЃР»РѕРІРѕРµ РїРѕР»Рµ
-- `image` вЂ” Р·Р°РіСЂСѓР·РєР° РёР·РѕР±СЂР°Р¶РµРЅРёСЏ СЃ РїСЂРµРІСЊСЋ
-- `array` вЂ” РґРёРЅР°РјРёС‡РµСЃРєРёР№ СЃРїРёСЃРѕРє СЌР»РµРјРµРЅС‚РѕРІ (РЅР°РїСЂРёРјРµСЂ, РєР°СЂС‚РѕС‡РєРё С‚РѕРІР°СЂРѕРІ)
+Поддерживаемые типы полей:
+- `text` — текстовое поле
+- `number` — числовое поле
+- `image` — загрузка изображения с превью
+- `array` — динамический список элементов (например, карточки товаров)
 
-### РџРµСЂРµРјРµРЅРЅС‹Рµ РѕРєСЂСѓР¶РµРЅРёСЏ
+### Переменные окружения
 
-Р’СЃРµ РїРµСЂРµРјРµРЅРЅС‹Рµ РёРјРµСЋС‚ Р·РЅР°С‡РµРЅРёСЏ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ РґР»СЏ Р»РѕРєР°Р»СЊРЅРѕР№ СЂР°Р·СЂР°Р±РѕС‚РєРё. Р”Р»СЏ РїСЂРѕРґР°РєС€РµРЅР° РїРµСЂРµРѕРїСЂРµРґРµР»РёС‚Рµ РёС… С‡РµСЂРµР· С„Р°Р№Р» `.env`:
+Все переменные имеют значения по умолчанию для локальной разработки. Для продакшена переопределите их через файл `.env`:
 
-| РџРµСЂРµРјРµРЅРЅР°СЏ | РџРѕ СѓРјРѕР»С‡Р°РЅРёСЋ | РћРїРёСЃР°РЅРёРµ |
+| Переменная | По умолчанию | Описание |
 |---|---|---|
-| `DB_USER` | `postgres` | РРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ PostgreSQL |
-| `DB_PASSWORD` | **(РћР‘РЇР—РђРўР•Р›Р¬РќРћ)** | РџР°СЂРѕР»СЊ PostgreSQL |
-| `DB_NAME` | `jvcms_db` | РќР°Р·РІР°РЅРёРµ Р±Р°Р·С‹ РґР°РЅРЅС‹С… |
-| `JWT_SECRET` | **(РћР‘РЇР—РђРўР•Р›Р¬РќРћ)** | РЎРµРєСЂРµС‚ РґР»СЏ РїРѕРґРїРёСЃРё JWT (Base64 СЃС‚СЂРѕРєР° РѕС‚ 32 Р±Р°Р№С‚) |
-| `NEXT_PUBLIC_API_URL` | `http://localhost:8080/api/v1` | URL Р±СЌРєРµРЅРґР° РґР»СЏ Р±СЂР°СѓР·РµСЂР° |
-| `ALLOWED_DOMAINS` | `localhost,127.0.0.1` | **Р‘РµР·РѕРїР°СЃРЅРѕСЃС‚СЊ (CSRF):** Р”РѕРјРµРЅС‹ С‡РµСЂРµР· Р·Р°РїСЏС‚СѓСЋ (РЅР°РїСЂРёРјРµСЂ, `my-domain.com`). Р—Р°С‰РёС‰Р°РµС‚ РѕС‚ РїРѕРґРјРµРЅС‹ Р·Р°РіРѕР»РѕРІРєРѕРІ Р·Р° РїСЂРѕРєСЃРё (Cloudflare/Nginx). |
+| `DB_USER` | `postgres` | Имя пользователя PostgreSQL |
+| `DB_PASSWORD` | **(ОБЯЗАТЕЛЬНО)** | Пароль PostgreSQL |
+| `DB_NAME` | `jvcms_db` | Название базы данных |
+| `JWT_SECRET` | **(ОБЯЗАТЕЛЬНО)** | Секрет для подписи JWT (Base64 строка от 32 байт) |
+| `NEXT_PUBLIC_API_URL` | `http://localhost:8080/api/v1` | URL бэкенда для браузера |
+| `ALLOWED_DOMAINS` | `localhost,127.0.0.1` | **Безопасность (CSRF):** Домены через запятую (например, `my-domain.com`). Защищает от подмены заголовков за прокси (Cloudflare/Nginx). |
 
-> **РџСЂРёРјРµС‡Р°РЅРёРµ:** РЎРєРѕРїРёСЂСѓР№С‚Рµ С„Р°Р№Р» `.env.example` РІ `.env` Рё РЅР°СЃС‚СЂРѕР№С‚Рµ РїРµСЂРµРјРµРЅРЅС‹Рµ РѕРєСЂСѓР¶РµРЅРёСЏ РїРµСЂРµРґ Р·Р°РїСѓСЃРєРѕРј СЃРёСЃС‚РµРјС‹.
+> **Примечание:** Скопируйте файл `.env.example` в `.env` и настройте переменные окружения перед запуском системы.
