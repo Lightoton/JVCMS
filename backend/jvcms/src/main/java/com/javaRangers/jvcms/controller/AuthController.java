@@ -37,8 +37,11 @@ public class AuthController {
     }
 
     @PostMapping("/init")
-    public ResponseEntity<AuthResponse> initFirstAdmin(@Valid @RequestBody AuthRequest request, jakarta.servlet.http.HttpServletResponse httpResponse) {
-        String token = authService.initFirstAdmin(request.email(), request.password());
+    public ResponseEntity<AuthResponse> initFirstAdmin(
+            @Valid @RequestBody AuthRequest request,
+            @RequestHeader(value = "X-Setup-Token", required = false) String setupToken,
+            jakarta.servlet.http.HttpServletResponse httpResponse) {
+        String token = authService.initFirstAdmin(request.email(), request.password(), setupToken);
         org.springframework.http.ResponseCookie springCookie = org.springframework.http.ResponseCookie.from("jwt_token", token)
                 .httpOnly(true)
                 .secure(true)

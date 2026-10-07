@@ -12,6 +12,7 @@ interface AuthResponse {
 export async function loginAction(formData: FormData) {
   const email = formData.get('email')?.toString();
   const password = formData.get('password')?.toString();
+  const setupToken = formData.get('setupToken')?.toString();
 
   if (!email || !password) {
     return { error: 'Заполните все поля' };
@@ -31,7 +32,9 @@ export async function loginAction(formData: FormData) {
     let token: string;
 
     if (!isInitialized) {
-      
+      if (setupToken) {
+        customHeaders['X-Setup-Token'] = setupToken;
+      }
       const data = await fetchApi<AuthResponse>('/auth/init', {
         method: 'POST',
         headers: customHeaders,

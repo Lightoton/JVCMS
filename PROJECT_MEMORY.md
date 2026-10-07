@@ -89,3 +89,8 @@ When working with dependencies, tools, or best practices, ALWAYS search the web 
 - Enforced @Email, @NotBlank, and @Size constraints on AuthRequest and UpdateUserRequest
 - Applied @Valid in AuthController to intercept malformed payloads
 - Added MethodArgumentNotValidException handler in GlobalExceptionHandler to return 400 Bad Request with precise field errors
+
+## Stage 8 (fix/logging) Completed
+- Added logback-spring.xml to securely log backend output to logs/cms.log with daily rotation
+- Removed swallowed exceptions in LoginAttemptService and added SLF4J log.warn
+- Ignored logs/ folder in backend .gitignore

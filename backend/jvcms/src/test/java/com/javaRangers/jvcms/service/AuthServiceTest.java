@@ -57,11 +57,22 @@ class AuthServiceTest {
         when(userRepository.count()).thenReturn(0L);
         when(passwordEncoder.encode(any())).thenReturn("encoded");
         when(jwtService.generateToken(any())).thenReturn("token");
+        org.springframework.test.util.ReflectionTestUtils.setField(authService, "setupToken", "secret123");
 
-        String token = authService.initFirstAdmin("admin@test.com", "pass");
+        String token = authService.initFirstAdmin("admin@test.com", "pass", "secret123");
 
         assertEquals("token", token);
         verify(userRepository, times(1)).saveAndFlush(any(User.class));
+    }
+
+    @Test
+    void testInitFirstAdmin_FailsWithInvalidToken() {
+        when(userRepository.count()).thenReturn(0L);
+        org.springframework.test.util.ReflectionTestUtils.setField(authService, "setupToken", "secret123");
+
+        assertThrows(org.springframework.security.access.AccessDeniedException.class, () -> {
+            authService.initFirstAdmin("admin@test.com", "pass", "wrong");
+        });
     }
 
     @Test
@@ -69,7 +80,7 @@ class AuthServiceTest {
         when(userRepository.count()).thenReturn(1L);
 
         assertThrows(IllegalStateException.class, () -> {
-            authService.initFirstAdmin("admin@test.com", "pass");
+            authService.initFirstAdmin("admin@test.com", "pass", "secret123");
         });
     }
 

@@ -20,10 +20,36 @@ public class AuthService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
+    @org.springframework.beans.factory.annotation.Value("${cms.setup.token:}")
+    private String setupToken;
+
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(AuthService.class);
+
+    @jakarta.annotation.PostConstruct
+    public void init() {
+        if (userRepository.count() == 0) {
+            log.warn("SYSTEM NOT INITIALIZED. No users found.");
+            if (setupToken != null && !setupToken.isEmpty()) {
+                log.warn("Setup token is configured. Use it to initialize the system.");
+            } else {
+                log.warn("WARNING: CMS_SETUP_TOKEN is NOT set. System initialization will be open to anyone!");
+            }
+        }
+    }
+
     @Transactional
-    public String initFirstAdmin(String email, String rawPassword) {
+    public String initFirstAdmin(String email, String rawPassword, String providedToken) {
         if (userRepository.count() > 0) {
             throw new IllegalStateException("System is already initialized. First admin creation is unavailable.");
+        }
+
+        if (setupToken != null && !setupToken.isEmpty()) {
+            if (providedToken == null) {
+                throw new org.springframework.security.access.AccessDeniedException("Setup token is required.");
+            }
+            if (!java.security.MessageDigest.isEqual(setupToken.getBytes(), providedToken.getBytes())) {
+                throw new org.springframework.security.access.AccessDeniedException("Invalid setup token.");
+            }
         }
 
         User admin = new User();
