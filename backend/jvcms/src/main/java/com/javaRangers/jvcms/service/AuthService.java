@@ -91,11 +91,14 @@ public class AuthService {
         User user = userRepository.findByEmail(oldEmail)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
+        boolean changed = false;
+
         if (newEmail != null && !newEmail.isBlank() && !newEmail.equals(oldEmail)) {
             if (userRepository.findByEmail(newEmail).isPresent()) {
                 throw new IllegalArgumentException("Email already taken");
             }
             user.setEmail(newEmail);
+            changed = true;
         }
 
         if (newRawPassword != null && !newRawPassword.isBlank()) {
@@ -103,6 +106,11 @@ public class AuthService {
                 throw new IllegalArgumentException("Password is too short");
             }
             user.setPassword(passwordEncoder.encode(newRawPassword));
+            changed = true;
+        }
+
+        if (changed) {
+            user.setTokenVersion(user.getTokenVersion() + 1);
         }
 
         userRepository.save(user);

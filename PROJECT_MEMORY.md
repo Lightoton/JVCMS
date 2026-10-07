@@ -64,3 +64,8 @@ When working with dependencies, tools, or best practices, ALWAYS search the web 
 - Created shared types for CMS schema (User, ContentItem, CmsField)
 - Replaced all usages of 'any' in frontend with strictly typed Record<string, unknown> or standard interfaces
 - Resolved React hook warnings (set-state-in-effect) in MediaLibrary and UserList
+
+## Stage 3 (fix/env-build-time) Completed
+- Created Next.js proxy route /api/proxy/uploads/[...path] to fetch images dynamically from backend without exposing ports
+- Removed NEXT_PUBLIC_UPLOADS_URL from docker-compose.yml, README and all frontend components
+- Changed <img src> and <Image src> to use relative /api/proxy/uploads/... URLs to avoid build-time inlining of localhost
