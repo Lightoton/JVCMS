@@ -1,6 +1,6 @@
 'use server';
 
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { fetchApi } from '@/shared/api/fetcher';
 import { redirect } from 'next/navigation';
 import { User } from '@/shared/types/cms';
@@ -19,6 +19,13 @@ export async function loginAction(formData: FormData) {
 
   try {
     
+    const reqHeaders = await headers();
+    const forwardedFor = reqHeaders.get('x-forwarded-for') || reqHeaders.get('x-real-ip');
+    const customHeaders: Record<string, string> = {};
+    if (forwardedFor) {
+      customHeaders['X-Forwarded-For'] = forwardedFor;
+    }
+
     const isInitialized = await fetchApi<boolean>('/auth/init-check', { requireAuth: false });
 
     let token: string;
@@ -27,6 +34,7 @@ export async function loginAction(formData: FormData) {
       
       const data = await fetchApi<AuthResponse>('/auth/init', {
         method: 'POST',
+        headers: customHeaders,
         body: JSON.stringify({ email, password }),
         requireAuth: false,
       });
@@ -35,6 +43,7 @@ export async function loginAction(formData: FormData) {
       
       const data = await fetchApi<AuthResponse>('/auth/login', {
         method: 'POST',
+        headers: customHeaders,
         body: JSON.stringify({ email, password }),
         requireAuth: false, 
       });

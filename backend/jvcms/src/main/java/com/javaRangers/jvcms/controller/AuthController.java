@@ -25,11 +25,7 @@ public class AuthController {
     private final LoginAttemptService loginAttemptService;
 
     private String getClientIP(HttpServletRequest request) {
-        String xfHeader = request.getHeader("X-Forwarded-For");
-        if (xfHeader == null || xfHeader.isEmpty() || !xfHeader.contains(request.getRemoteAddr())) {
-            return request.getRemoteAddr();
-        }
-        return xfHeader.split(",")[0];
+        return request.getRemoteAddr();
     }
 
     
