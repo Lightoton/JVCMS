@@ -25,10 +25,12 @@ services:
       - SPRING_DATASOURCE_USERNAME=${DB_USER:-postgres}
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD:?DB_PASSWORD is required}
       - JWT_SECRET=${JWT_SECRET:?JWT_SECRET is required}
+      - CMS_CONFIG_PATH=/app/cms.config.json
     ports:
       - "127.0.0.1:8080:8080"
     volumes:
       - jvcms-uploads:/app/uploads
+      - ./cms.config.json:/app/cms.config.json:ro
 
   frontend:
     build:

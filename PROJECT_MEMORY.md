@@ -94,3 +94,14 @@ When working with dependencies, tools, or best practices, ALWAYS search the web 
 - Added logback-spring.xml to securely log backend output to logs/cms.log with daily rotation
 - Removed swallowed exceptions in LoginAttemptService and added SLF4J log.warn
 - Ignored logs/ folder in backend .gitignore
+
+## Stage 9 (feat/setup-token) Completed
+- Added CMS_SETUP_TOKEN to backend environment to protect the first admin creation
+- AuthController now requires X-Setup-Token header for /api/v1/auth/init
+- LoginView (frontend) requests Setup Token from user if system is not initialized
+- Updated README.md and .env.example with instructions on how to use CMS_SETUP_TOKEN
+
+## Stage 10 (fix/server-actions-origin) Completed
+- Clarified that Next.js 16 explicitly renamed middleware.ts to proxy.ts, so the file name proxy.ts is actually correct.
+- Fixed unused error variable warning in catch block of proxy.ts.
+- Verified that serverActions.allowedOrigins in next.config.ts correctly sits under the experimental block for this specific Next.js version to allow Cloudflare/Nginx reverse proxy scenarios without CSRF errors.

@@ -2,11 +2,10 @@ import { useState, useEffect, useTransition } from 'react';
 import { saveContentAction, getContent } from '@/features/content/actions';
 import { uploadMediaAction } from '@/features/media/actions';
 import Image from 'next/image';
-import config from '../cms.config.json';
 import { useTranslation } from '@/shared/i18n/LanguageContext';
 
-export function ContentManager() {
-  const models = config.models;
+export function ContentManager({ schemaConfig }: { schemaConfig: any }) {
+  const models: any[] = schemaConfig?.models || [];
   const [activeSchema, setActiveSchema] = useState<string>(models[0]?.id || '');
   const [data, setData] = useState<Record<string, unknown> | null>(null);
   const [loading, setLoading] = useState(true);
