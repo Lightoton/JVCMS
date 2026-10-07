@@ -44,6 +44,7 @@ public class JwtService {
     public String generateToken(User user) {
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("role", user.getRole().name()); 
+        extraClaims.put("version", user.getTokenVersion());
         return buildToken(extraClaims, user.getEmail(), jwtExpiration);
     }
 
@@ -57,13 +58,20 @@ public class JwtService {
                 .compact();
     }
 
-    public boolean isTokenValid(String token, String userEmail) {
+    public boolean isTokenValid(String token, User user) {
         final String username = extractUsername(token);
-        return (username.equals(userEmail)) && !isTokenExpired(token);
+        final Integer tokenVersion = extractTokenVersion(token);
+        return (username.equals(user.getEmail())) 
+               && !isTokenExpired(token) 
+               && (tokenVersion != null && tokenVersion.equals(user.getTokenVersion()));
     }
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
+    }
+
+    public Integer extractTokenVersion(String token) {
+        return extractClaim(token, claims -> claims.get("version", Integer.class));
     }
 
     private boolean isTokenExpired(String token) {
