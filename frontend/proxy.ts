@@ -28,7 +28,7 @@ export function proxy(request: NextRequest) {
         requestHeaders.set('x-forwarded-host', originHost);
         requestHeaders.set('host', originHost);
       }
-    } catch (e) {
+    } catch {
     }
   }
 
