@@ -73,3 +73,7 @@ When working with dependencies, tools, or best practices, ALWAYS search the web 
 ## Stage 4 (fix/jwt-revocation) Completed
 - Added Flyway migration \V2__add_token_version.sql\ to introduce \	oken_version\ in \users\ table
 - Updated \User\ entity to implement \UserDetails\ and include \	okenVersion\`n- Injected \ersion\ claim into JWT tokens inside \JwtService\`n- Enforced strict \	okenVersion\ matching in \JwtAuthenticationFilter\`n- Configured \AuthService.updateUser\ to increment \	okenVersion\ upon email or password changes, thereby instantly revoking any previously issued JWTs
+
+## Stage 5 (fix/rate-limiting) Completed
+- Added \server.forward-headers-strategy=native\ to \pplication.properties\`n- Updated \AuthController\ to use native \equest.getRemoteAddr()\ instead of manual header parsing
+- In \rontend/features/auth/actions.ts\, updated \loginAction\ to read \x-forwarded-for\ (or \x-real-ip\) from the Next.js incoming request and proxy it down to the Spring Boot fetch call
