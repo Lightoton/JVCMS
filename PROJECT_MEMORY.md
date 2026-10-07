@@ -105,3 +105,10 @@ When working with dependencies, tools, or best practices, ALWAYS search the web 
 - Clarified that Next.js 16 explicitly renamed middleware.ts to proxy.ts, so the file name proxy.ts is actually correct.
 - Fixed unused error variable warning in catch block of proxy.ts.
 - Verified that serverActions.allowedOrigins in next.config.ts correctly sits under the experimental block for this specific Next.js version to allow Cloudflare/Nginx reverse proxy scenarios without CSRF errors.
+
+## Stage 11 (feat/zero-rebuild) Completed
+- Moved cms.config.json from frontend/ to project root CMS/.
+- Configured backend to mount and read cms.config.json via SchemaService.
+- Added SchemaController to expose GET /api/v1/schema publicly.
+- Refactored frontend to dynamically fetch schemaConfig via Server Action instead of statically importing JSON, enabling zero-rebuild schema updates.
+- Unit and integration tests pass successfully.
