@@ -77,3 +77,9 @@ When working with dependencies, tools, or best practices, ALWAYS search the web 
 ## Stage 5 (fix/rate-limiting) Completed
 - Added \server.forward-headers-strategy=native\ to \pplication.properties\`n- Updated \AuthController\ to use native \equest.getRemoteAddr()\ instead of manual header parsing
 - In \rontend/features/auth/actions.ts\, updated \loginAction\ to read \x-forwarded-for\ (or \x-real-ip\) from the Next.js incoming request and proxy it down to the Spring Boot fetch call
+
+## Stage 6 (fix/global-exception-handler) Completed
+- Converted GlobalExceptionHandler to @RestControllerAdvice
+- Stopped leaking Exception.getMessage() on HTTP 500 errors to prevent information disclosure
+- Changed responses to strictly return ResponseEntity<Map<String, String>> instead of Spring ProblemDetail
+- Mapped DataIntegrityViolationException to HTTP 409 Conflict

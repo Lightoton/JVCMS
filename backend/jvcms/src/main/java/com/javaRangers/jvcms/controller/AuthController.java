@@ -13,6 +13,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
+
 import java.util.Map;
 
 @RestController
@@ -35,7 +37,7 @@ public class AuthController {
     }
 
     @PostMapping("/init")
-    public ResponseEntity<AuthResponse> initFirstAdmin(@RequestBody AuthRequest request, jakarta.servlet.http.HttpServletResponse httpResponse) {
+    public ResponseEntity<AuthResponse> initFirstAdmin(@Valid @RequestBody AuthRequest request, jakarta.servlet.http.HttpServletResponse httpResponse) {
         String token = authService.initFirstAdmin(request.email(), request.password());
         org.springframework.http.ResponseCookie springCookie = org.springframework.http.ResponseCookie.from("jwt_token", token)
                 .httpOnly(true)
@@ -49,7 +51,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request, HttpServletRequest httpRequest, jakarta.servlet.http.HttpServletResponse httpResponse) {
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody AuthRequest request, HttpServletRequest httpRequest, jakarta.servlet.http.HttpServletResponse httpResponse) {
         String ip = getClientIP(httpRequest);
         if (loginAttemptService.isBlocked(ip)) {
             throw new LockedException("Too many failed login attempts. Please wait 15 minutes.");
@@ -89,7 +91,7 @@ public class AuthController {
     }
 
     @PostMapping("/create-client")
-    public ResponseEntity<Map<String, String>> createClient(@RequestBody AuthRequest request) {
+    public ResponseEntity<Map<String, String>> createClient(@Valid @RequestBody AuthRequest request) {
         String result = authService.createClientUser(request.email(), request.password());
         return ResponseEntity.ok(Map.of("message", result));
     }
@@ -106,7 +108,7 @@ public class AuthController {
     }
 
     @PutMapping("/users/{email}")
-    public ResponseEntity<Void> updateUser(@PathVariable String email, @RequestBody UpdateUserRequest request) {
+    public ResponseEntity<Void> updateUser(@PathVariable String email, @Valid @RequestBody UpdateUserRequest request) {
         authService.updateUser(email, request.newEmail(), request.newPassword());
         return ResponseEntity.ok().build();
     }
