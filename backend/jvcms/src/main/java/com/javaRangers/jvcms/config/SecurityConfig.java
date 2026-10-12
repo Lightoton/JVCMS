@@ -38,6 +38,7 @@ public class SecurityConfig {
                         
                         .requestMatchers("/api/v1/auth/init","/api/v1/auth/init-check", "/api/v1/auth/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/content/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/schema").permitAll()
                         .requestMatchers(HttpMethod.GET, "/uploads/**").permitAll()
 
                         

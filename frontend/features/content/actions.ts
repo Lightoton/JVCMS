@@ -39,3 +39,14 @@ export async function getAllSchemas() {
     return [];
   }
 }
+
+export async function getSchemaConfig() {
+  try {
+    return await fetchApi<Record<string, unknown>>('/schema', { 
+      requireAuth: false,
+      next: { tags: ['schema'] }
+    });
+  } catch (error) {
+    return { models: [] };
+  }
+}

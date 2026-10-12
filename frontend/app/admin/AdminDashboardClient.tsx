@@ -10,7 +10,7 @@ import { useTranslation } from '@/shared/i18n/LanguageContext';
 
 type Tab = 'content' | 'media' | 'users' | 'developer';
 
-export function AdminDashboardClient({ initialSchemas }: { initialSchemas: string[] }) {
+export function AdminDashboardClient({ initialSchemas, schemaConfig }: { initialSchemas: string[], schemaConfig: any }) {
   const [activeTab, setActiveTab] = useState<Tab>('content');
   const { t, lang, setLang } = useTranslation();
 
@@ -67,7 +67,7 @@ export function AdminDashboardClient({ initialSchemas }: { initialSchemas: strin
 
         {/* Main Content Area */}
         <div className="flex-1 p-8">
-          {activeTab === 'content' && <ContentManager />}
+          {activeTab === 'content' && <ContentManager schemaConfig={schemaConfig} />}
           {activeTab === 'media' && <MediaLibrary />}
           {activeTab === 'users' && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
