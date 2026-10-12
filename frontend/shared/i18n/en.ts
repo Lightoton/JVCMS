@@ -74,4 +74,11 @@ export const en: Translations = {
   createClientBtn: "Create Client",
   createClientBtnCreating: "Creating...",
   createClientSuccess: "Client successfully created!",
+
+  // Common Dialogs
+  cancel: "Cancel",
+  confirm: "Confirm",
+  confirmTitle: "Confirmation",
+  deleteConfirmTitle: "Confirm Deletion",
+  deleteConfirmBtn: "Delete",
 };

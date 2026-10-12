@@ -72,6 +72,13 @@ export const ru = {
   createClientBtn: "Создать клиента",
   createClientBtnCreating: "Создание...",
   createClientSuccess: "Клиент успешно создан!",
+
+  // Common Dialogs
+  cancel: "Отмена",
+  confirm: "Подтвердить",
+  confirmTitle: "Подтверждение",
+  deleteConfirmTitle: "Подтверждение удаления",
+  deleteConfirmBtn: "Удалить",
 };
 
 export type Translations = typeof ru;

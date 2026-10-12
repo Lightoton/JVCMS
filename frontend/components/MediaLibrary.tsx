@@ -4,12 +4,14 @@ import { useState, useEffect, useTransition } from 'react';
 import Image from 'next/image';
 import { listMediaAction, deleteMediaAction } from '@/features/media/actions';
 import { MediaUploader } from './MediaUploader';
+import { ConfirmDialog } from './ConfirmDialog';
 import { useTranslation } from '@/shared/i18n/LanguageContext';
 
 export function MediaLibrary() {
   const [mediaFiles, setMediaFiles] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [isPending, startTransition] = useTransition();
+  const [fileToDelete, setFileToDelete] = useState<string | null>(null);
   const { t } = useTranslation();
 
   const fetchMedia = async () => {
@@ -29,18 +31,18 @@ export function MediaLibrary() {
     fetchMedia();
   }, []);
 
-  const handleDelete = (url: string) => {
-    if (window.confirm(t.deleteFileConfirm)) {
-      startTransition(async () => {
-        const filename = url.split('/').pop() || '';
-        const res = await deleteMediaAction(filename);
-        if (res.error) {
-           alert(res.error);
-        } else {
-           setMediaFiles(prev => prev.filter(f => f !== url));
-        }
-      });
-    }
+  const confirmDelete = () => {
+    if (!fileToDelete) return;
+    startTransition(async () => {
+      const filename = fileToDelete.split('/').pop() || '';
+      const res = await deleteMediaAction(filename);
+      if (res.error) {
+        alert(res.error);
+      } else {
+        setMediaFiles(prev => prev.filter(f => f !== fileToDelete));
+      }
+      setFileToDelete(null);
+    });
   };
 
   return (
@@ -81,7 +83,7 @@ export function MediaLibrary() {
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex flex-col justify-between p-2 opacity-0 group-hover:opacity-100">
                     <div className="flex justify-end">
                       <button 
-                        onClick={() => handleDelete(url)}
+                        onClick={() => setFileToDelete(url)}
                         disabled={isPending}
                         className="bg-red-500 text-white p-1 rounded hover:bg-red-600 transition-colors"
                         title={t.deleteUser}
@@ -99,6 +101,18 @@ export function MediaLibrary() {
           </div>
         )}
       </div>
+
+      <ConfirmDialog
+        isOpen={!!fileToDelete}
+        title={t.deleteConfirmTitle}
+        message={t.deleteFileConfirm}
+        confirmLabel={t.deleteConfirmBtn}
+        cancelLabel={t.cancel}
+        isDestructive={true}
+        isLoading={isPending}
+        onConfirm={confirmDelete}
+        onCancel={() => setFileToDelete(null)}
+      />
     </div>
   );
 }
