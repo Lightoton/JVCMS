@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { CreateClientForm } from '@/components/CreateClientForm';
 import { UniversalContentEditor } from '@/components/UniversalContentEditor';
 import { MediaLibrary } from '@/components/MediaLibrary';
@@ -10,7 +10,13 @@ import { useTranslation } from '@/shared/i18n/LanguageContext';
 
 type Tab = 'content' | 'media' | 'users' | 'developer';
 
-export function AdminDashboardClient({ initialSchemas, schemaConfig }: { initialSchemas: string[], schemaConfig: any }) {
+export function AdminDashboardClient({ 
+  initialSchemas, 
+  schemaConfig 
+}: { 
+  initialSchemas: string[]; 
+  schemaConfig?: Record<string, unknown>; 
+}) {
   const [activeTab, setActiveTab] = useState<Tab>('content');
   const { t, lang, setLang } = useTranslation();
 

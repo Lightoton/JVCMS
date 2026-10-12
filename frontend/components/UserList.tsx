@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useTransition } from 'react';
 import { getUsersAction, deleteUserAction, updateUserAction, logoutAction } from '@/features/auth/actions';
+import { ConfirmDialog } from './ConfirmDialog';
+import { EditCredentialsModal } from './EditCredentialsModal';
 import { useTranslation } from '@/shared/i18n/LanguageContext';
 
 interface User {
@@ -13,6 +15,8 @@ export function UserList() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [isPending, startTransition] = useTransition();
+  const [userToDelete, setUserToDelete] = useState<string | null>(null);
+  const [editingUser, setEditingUser] = useState<{ email: string; role: string } | null>(null);
   const { t } = useTranslation();
 
   const fetchUsers = async () => {
@@ -31,53 +35,37 @@ export function UserList() {
     fetchUsers();
   }, []);
 
-  const handleDelete = (email: string) => {
-    if (window.confirm(`${t.deleteUserConfirm} ${email}?`)) {
-      startTransition(async () => {
-        const res = await deleteUserAction(email);
-        if (res.error) {
-          alert(res.error);
-        } else {
-          setUsers(users.filter(u => u.email !== email));
-        }
-      });
-    }
+  const confirmDeleteUser = () => {
+    if (!userToDelete) return;
+    startTransition(async () => {
+      const res = await deleteUserAction(userToDelete);
+      if (res.error) {
+        alert(res.error);
+      } else {
+        setUsers(prev => prev.filter(u => u.email !== userToDelete));
+      }
+      setUserToDelete(null);
+    });
   };
 
-  const handleChangeCredentials = (email: string, role: string) => {
-    const newEmail = window.prompt(t.newEmailPrompt);
-    if (newEmail === null) return;
-
-    const newPassword = window.prompt(t.newPasswordPrompt);
-    if (newPassword === null) return;
-
-    if (!newEmail && !newPassword) {
-      return;
-    }
-
-    if (newPassword && newPassword.length > 0 && newPassword.length < 5) {
-      alert(t.passwordTooShort);
-      return;
-    }
-
-    if (window.confirm(t.editConfirm1)) {
-      if (window.confirm(t.editConfirm2)) {
-        startTransition(async () => {
-          const res = await updateUserAction(email, newEmail, newPassword);
-          if (res.error) {
-            alert(res.error);
-          } else {
-            alert(t.credentialsChanged);
-            if (newEmail && newEmail !== email && role === 'ADMIN') {
-              alert(t.reloginRequired);
-              await logoutAction();
-            } else {
-              fetchUsers();
-            }
-          }
-        });
+  const handleSaveCredentials = (newEmail: string, newPassword: string) => {
+    if (!editingUser) return;
+    const { email, role } = editingUser;
+    startTransition(async () => {
+      const res = await updateUserAction(email, newEmail, newPassword);
+      if (res.error) {
+        alert(res.error);
+      } else {
+        alert(t.credentialsChanged);
+        setEditingUser(null);
+        if (newEmail && newEmail !== email && role === 'ADMIN') {
+          alert(t.reloginRequired);
+          await logoutAction();
+        } else {
+          fetchUsers();
+        }
       }
-    }
+    });
   };
 
   return (
@@ -112,17 +100,17 @@ export function UserList() {
                   <td className="p-3 flex justify-end gap-2">
                     <>
                       <button 
-                        onClick={() => handleChangeCredentials(u.email, u.role)} 
+                        onClick={() => setEditingUser({ email: u.email, role: u.role })} 
                         disabled={isPending}
-                        className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-2 py-1 text-xs rounded transition-colors"
+                        className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-2.5 py-1 text-xs font-medium rounded-lg transition-colors"
                       >
                         {t.changeCredentials}
                       </button>
                       {u.role !== 'ADMIN' && (
                         <button 
-                          onClick={() => handleDelete(u.email)} 
+                          onClick={() => setUserToDelete(u.email)} 
                           disabled={isPending}
-                          className="bg-red-100 hover:bg-red-200 text-red-700 px-2 py-1 text-xs rounded transition-colors"
+                          className="bg-red-50 hover:bg-red-100 text-red-700 px-2.5 py-1 text-xs font-medium rounded-lg transition-colors"
                         >
                           {t.deleteUser}
                         </button>
@@ -135,6 +123,27 @@ export function UserList() {
           </table>
         </div>
       )}
+
+      <ConfirmDialog
+        isOpen={!!userToDelete}
+        title={t.deleteConfirmTitle}
+        message={`${t.deleteUserConfirm} ${userToDelete}?`}
+        confirmLabel={t.deleteConfirmBtn}
+        cancelLabel={t.cancel}
+        isDestructive={true}
+        isLoading={isPending}
+        onConfirm={confirmDeleteUser}
+        onCancel={() => setUserToDelete(null)}
+      />
+
+      <EditCredentialsModal
+        isOpen={!!editingUser}
+        targetEmail={editingUser?.email || ''}
+        role={editingUser?.role || ''}
+        isLoading={isPending}
+        onClose={() => setEditingUser(null)}
+        onSave={handleSaveCredentials}
+      />
     </div>
   );
 }

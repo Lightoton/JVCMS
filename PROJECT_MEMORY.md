@@ -112,3 +112,10 @@ When working with dependencies, tools, or best practices, ALWAYS search the web 
 - Added SchemaController to expose GET /api/v1/schema publicly.
 - Refactored frontend to dynamically fetch schemaConfig via Server Action instead of statically importing JSON, enabling zero-rebuild schema updates.
 - Unit and integration tests pass successfully.
+
+## Stage 12 (feat/confirmation-dialogs) Completed
+- Created accessible ConfirmDialog component replacing native window.confirm for all destructive UI actions (deleting content items, media files, and users).
+- Created EditCredentialsModal component replacing chained window.prompt/window.confirm for user credential updates.
+- Added localization strings for dialog actions and titles in ru.ts and en.ts.
+- Resolved TypeScript and ESLint type annotations in ContentManager and AdminDashboardClient.
+- Verified 0 ESLint errors and successful Next.js production build.

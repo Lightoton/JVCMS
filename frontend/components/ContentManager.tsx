@@ -2,15 +2,34 @@ import { useState, useEffect, useTransition } from 'react';
 import { saveContentAction, getContent } from '@/features/content/actions';
 import { uploadMediaAction } from '@/features/media/actions';
 import Image from 'next/image';
+import { ConfirmDialog } from './ConfirmDialog';
 import { useTranslation } from '@/shared/i18n/LanguageContext';
 
-export function ContentManager({ schemaConfig }: { schemaConfig: any }) {
-  const models: any[] = schemaConfig?.models || [];
+interface ModelConfig {
+  id: string;
+  label?: string;
+  label_ru?: string;
+  label_en?: string;
+  fields: Array<Record<string, unknown>>;
+  [key: string]: unknown;
+}
+
+export function ContentManager({ schemaConfig }: { schemaConfig?: Record<string, unknown> }) {
+  const models = (schemaConfig?.models as ModelConfig[]) || [];
   const [activeSchema, setActiveSchema] = useState<string>(models[0]?.id || '');
   const [data, setData] = useState<Record<string, unknown> | null>(null);
   const [loading, setLoading] = useState(true);
   const [isPending, startTransition] = useTransition();
+  const [deleteItemState, setDeleteItemState] = useState<{ fieldName: string; id: string } | null>(null);
   const { t, lang } = useTranslation();
+
+  const confirmDeleteArrayItem = () => {
+    if (!deleteItemState || !data) return;
+    const { fieldName, id } = deleteItemState;
+    const currentItems = (data[fieldName] as Record<string, unknown>[]) || [];
+    setData({ ...data, [fieldName]: currentItems.filter((item) => item.id !== id) });
+    setDeleteItemState(null);
+  };
 
   const fetchData = async (schema: string) => {
     if (!schema) return;
@@ -150,9 +169,7 @@ export function ContentManager({ schemaConfig }: { schemaConfig: any }) {
         alert(t.cannotDeleteLast);
         return;
       }
-      if (confirm(t.deleteConfirm)) {
-        setData({ ...data, [fieldName]: items.filter((item) => item.id !== id) } as Record<string, unknown>);
-      }
+      setDeleteItemState({ fieldName, id });
     };
 
     return (
@@ -265,6 +282,17 @@ export function ContentManager({ schemaConfig }: { schemaConfig: any }) {
           {renderActiveModel()}
         </div>
       )}
+
+      <ConfirmDialog
+        isOpen={!!deleteItemState}
+        title={t.deleteConfirmTitle}
+        message={t.deleteConfirm}
+        confirmLabel={t.deleteConfirmBtn}
+        cancelLabel={t.cancel}
+        isDestructive={true}
+        onConfirm={confirmDeleteArrayItem}
+        onCancel={() => setDeleteItemState(null)}
+      />
     </div>
   );
 }
